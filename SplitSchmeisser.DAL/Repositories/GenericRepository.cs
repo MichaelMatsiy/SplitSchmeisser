@@ -1,50 +1,51 @@
 ﻿using SplitSchmeisser.DAL.Context;
+using SplitSchmeisser.DAL.Entities.Base;
 using SplitSchmeisser.DAL.Interfaces;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SplitSchmeisser.DAL.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
     {
-        private SchmeisserContext _context = null;
-        private DbSet<T> table = null;
-        public GenericRepository()
+        private SchmeisserContext context;
+
+        public GenericRepository(SchmeisserContext context)
         {
-            this._context = new SchmeisserContext();
-            table = _context.Set<T>();
+            this.context = context;
         }
-        public GenericRepository(SchmeisserContext _context)
+
+        public IQueryable<TEntity> GetAll()
         {
-            this._context = _context;
-            table = _context.Set<T>();
+            return context.Set<TEntity>().AsNoTracking();
         }
-        public IEnumerable<T> GetAll()
+
+        public async Task<TEntity> GetById(int id)
         {
-            return table.ToList();
+            return await context.Set<TEntity>()
+                        .AsNoTracking()
+                        .FirstOrDefaultAsync(e => e.Id == id);
         }
-        public T GetById(object id)
+
+        public async Task Insert(TEntity entity)
         {
-            return table.Find(id);
+            await context.Set<TEntity>().AddAsync(entity);
+            await context.SaveChangesAsync();
         }
-        public void Insert(T obj)
+
+        public async Task Update(int id, TEntity entity)
         {
-            table.Add(obj);
+            context.Set<TEntity>().Update(entity);
+            await context.SaveChangesAsync();
         }
-        public void Update(T obj)
+
+        public async Task Delete(int id)
         {
-            table.Attach(obj);
-            _context.Entry(obj).State = EntityState.Modified;
-        }
-        public void Delete(object id)
-        {
-            T existing = table.Find(id);
-            table.Remove(existing);
-        }
-        public void Save()
-        {
-            _context.SaveChanges();
+            var entity = await GetById(id);
+            context.Set<TEntity>().Remove(entity);
+            await context.SaveChangesAsync();
         }
     }
 }

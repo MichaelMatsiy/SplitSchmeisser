@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SplitSchmeisser.DAL", "Spli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SplitSchmeisser.BLL", "SplitSchmeisser.BLL\SplitSchmeisser.BLL.csproj", "{2B50F27B-BD47-4CE8-B48B-E9E1187A5DCA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SplitSchmeisser.Web", "SplitSchmeisser.Web\SplitSchmeisser.Web.csproj", "{FDCBF668-69E5-44F3-9A1E-439D4EE82AED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2B50F27B-BD47-4CE8-B48B-E9E1187A5DCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B50F27B-BD47-4CE8-B48B-E9E1187A5DCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2B50F27B-BD47-4CE8-B48B-E9E1187A5DCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDCBF668-69E5-44F3-9A1E-439D4EE82AED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDCBF668-69E5-44F3-9A1E-439D4EE82AED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDCBF668-69E5-44F3-9A1E-439D4EE82AED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDCBF668-69E5-44F3-9A1E-439D4EE82AED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
