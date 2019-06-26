@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SplitSchmeisser.BLL.Implementation;
+using SplitSchmeisser.BLL.Interfaces;
 using SplitSchmeisser.DAL.Context;
 using SplitSchmeisser.DAL.Entities.Base;
 using SplitSchmeisser.DAL.Interfaces;
@@ -40,6 +42,8 @@ namespace SplitSchmeisser.Web
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddTransient<IGroupServise, GroupService>();
+
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

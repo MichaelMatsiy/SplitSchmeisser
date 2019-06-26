@@ -12,6 +12,5 @@ namespace SplitSchmeisser.DAL.Entities
         public double Amount { get; set; }
         public string Description { get; set; }
 
-        public virtual ICollection<User> Members { get; set; }
     }
 }

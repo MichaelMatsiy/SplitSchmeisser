@@ -7,7 +7,7 @@ namespace SplitSchmeisser.DAL.Entities
     {
         public string GroupName { get; set; }
 
-        public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<UserGroup> UserGroups { get; set; }
 
         public virtual ICollection<Operation> Operations { get; set; }
     }

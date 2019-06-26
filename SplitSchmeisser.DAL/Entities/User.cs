@@ -6,7 +6,7 @@ namespace SplitSchmeisser.DAL.Entities
     public class User : BaseEntity
     {
         public string UserName { get; set; }
-        public virtual ICollection<Group> Groups { get; set; }
 
+        public virtual ICollection<UserGroup> UserGroups { get; set; }
     }
 }

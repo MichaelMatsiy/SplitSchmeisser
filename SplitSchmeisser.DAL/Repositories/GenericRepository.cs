@@ -1,8 +1,8 @@
-﻿using SplitSchmeisser.DAL.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using SplitSchmeisser.DAL.Context;
 using SplitSchmeisser.DAL.Entities.Base;
 using SplitSchmeisser.DAL.Interfaces;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -35,7 +35,7 @@ namespace SplitSchmeisser.DAL.Repositories
             await context.SaveChangesAsync();
         }
 
-        public async Task Update(int id, TEntity entity)
+        public async Task Update(TEntity entity)
         {
             context.Set<TEntity>().Update(entity);
             await context.SaveChangesAsync();

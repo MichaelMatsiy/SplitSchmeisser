@@ -2,7 +2,6 @@
 using SplitSchmeisser.DAL.Entities;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Text;
 
 namespace SplitSchmeisser.DAL.Context
@@ -15,5 +14,22 @@ namespace SplitSchmeisser.DAL.Context
 
         public SchmeisserContext(DbContextOptions<SchmeisserContext> options) : base(options) { }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserGroup>()
+                .HasKey(x => new { x.UserId, x.GroupId });
+
+            modelBuilder.Entity<UserGroup>()
+                .HasOne(x => x.User)
+                .WithMany(x => x.UserGroups)
+                .HasForeignKey(x => x.UserId);
+
+            modelBuilder.Entity<UserGroup>()
+                .HasOne(x => x.Group)
+                .WithMany(x => x.UserGroups)
+                .HasForeignKey(x => x.GroupId);
+
+
+        }
     }
 }
