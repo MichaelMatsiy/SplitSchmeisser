@@ -1,9 +1,7 @@
 ﻿using SplitSchmeisser.DAL.Entities;
 using SplitSchmeisser.DAL.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace SplitSchmeisser.BLL.Implementation
 {
@@ -48,6 +46,7 @@ namespace SplitSchmeisser.BLL.Implementation
             var debt = otherOperations.ToDictionary(x => x.Key, x => (x.Sum(s => s.Amount) / memberCount) - (userPayments/ memberCount));
         }
 
+        //test
         public void TestSum()
         {
             var user = 3;
@@ -65,7 +64,6 @@ namespace SplitSchmeisser.BLL.Implementation
 
             var debt = otherAmounts.ToDictionary(x => x.Key, x => (x.Sum(s => s.amount) / 3) - userAmount/3);
 
-            var i = 0;
         }
 
         public class UserDebt
