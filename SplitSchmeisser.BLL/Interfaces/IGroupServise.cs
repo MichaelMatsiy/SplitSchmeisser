@@ -14,5 +14,7 @@ namespace SplitSchmeisser.BLL.Interfaces
         void AddUserToGroup(int groupId, int userId);
 
         IList<GroupDTO> GetGroups();
+
+        void UpdateGroup(GroupDTO group);
     }
 }

@@ -13,7 +13,6 @@ using Microsoft.Extensions.DependencyInjection;
 using SplitSchmeisser.BLL.Implementation;
 using SplitSchmeisser.BLL.Interfaces;
 using SplitSchmeisser.DAL.Context;
-using SplitSchmeisser.DAL.Entities.Base;
 using SplitSchmeisser.DAL.Interfaces;
 using SplitSchmeisser.DAL.Repositories;
 

@@ -8,18 +8,32 @@
         @if (Model != null && Model.Any())
         {
             <h1>@ViewData["Title"]</h1>
-
-            <article class="esh-orders-titles row">
-                <section class="esh-orders-title col-xs-4">Group Name</section>
-                <section class="esh-orders-title col-xs-2"></section>
-            </article>
-
-            @foreach (var item in Model)
-            {
-                <article class="esh-orders-items row">
-                    <section class="esh-orders-item col-xs-2">@Html.DisplayFor(modelItem => item.GroupName)</section>
-                </article>
-            }
+            <table class="table">
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td scope="row">
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.Id" style="text-decoration: none;">
+                                    @Html.DisplayFor(modelItem => item.GroupName)
+                                </a>
+                                
+                            </td>
+                            <td style="text-align: right;">
+                                <a asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none;">
+                                    <img src="~/icons/edit.png" alt="Edit" width="20" height="20" />
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" style="text-decoration: none;">
+                                    <img src="~/icons/garbage.png" alt="Remove" width="20" height="20" />
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         }
         else
         {
@@ -28,4 +42,4 @@
             </div>
         }
     </div>
-        </div>
+</div>

@@ -47,6 +47,11 @@ namespace SplitSchmeisser.BLL.Implementation
             this.groupRepository.Insert(group);
         }
 
+        public void UpdateGroup(GroupDTO group)
+        {
+            this.groupRepository.Update(new Group { Id = group.Id, GroupName = group.Name});
+        }
+
         public IList<GroupDTO> GetGroups()
         {
             return this.groupRepository.GetAll()
