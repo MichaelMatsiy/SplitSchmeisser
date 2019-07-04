@@ -6,17 +6,14 @@ using System.Threading.Tasks;
 
 namespace SplitSchmeisser.Web.Models
 {
-    public class GroupViewModel
+    public class CreateGroupModel
     {
-        public GroupViewModel()
-        {
-            this.Users = new List<SelectListItem>();
-        }
-
-        public int Id { get; set; }
         public string GroupName { get; set; }
+
+        public double Amount { get; set; }
 
         public List<SelectListItem> Users { get; set; }
 
+        public List<int> UserIds { get; set; }
     }
 }

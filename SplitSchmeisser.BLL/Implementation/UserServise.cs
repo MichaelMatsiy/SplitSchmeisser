@@ -1,4 +1,6 @@
-﻿using SplitSchmeisser.DAL.Entities;
+﻿using SplitSchmeisser.BLL.Interfaces;
+using SplitSchmeisser.BLL.Models;
+using SplitSchmeisser.DAL.Entities;
 using SplitSchmeisser.DAL.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,41 +11,52 @@ namespace SplitSchmeisser.BLL.Implementation
     {
         private IGenericRepository<Operation> operationRepository;
         private IGenericRepository<Group> groupRepository;
+        private IGenericRepository<User> userRepository;
 
 
-        public UserServise(IGenericRepository<Group> groupRepository)
+        public UserServise(IGenericRepository<Group> groupRepository,
+            IGenericRepository<User> userRepository)
         {
             this.groupRepository = groupRepository;
+            this.userRepository = userRepository;
         }
+
+        public IList<UserDTO> GetUsers()
+        {
+            return this.userRepository.GetAll()
+                .Select(x => UserDTO.FromEntity(x))
+                .ToList();
+        }
+
         public void GetUserDebsByGroup(int userId, int groupId)
         {
             var group = this.groupRepository.GetById(groupId).Result;
             var memberCount = group.UserGroups.Count;
-            var operations = group.Operations
-                .ToList();
+            //var operations = group.Operations
+            //    .ToList();
 
-            var userPayments = operations.Where(x => x.Owner.Id == userId)
-                .Sum(x => x.Amount);
+            //var userPayments = operations.Where(x => x.Owner.Id == userId)
+            //    .Sum(x => x.Amount);
 
-            var otherPayments = operations.Where(x => x.Owner.Id != userId)
-                .Sum(x => x.Amount);
+            //var otherPayments = operations.Where(x => x.Owner.Id != userId)
+            //    .Sum(x => x.Amount);
 
-            var debt = userPayments - otherPayments;
+           //var debt = userPayments - otherPayments;
         }
 
         public void GetUserDebsByGroupPerUrers(int userId, int groupId)
         {
             var group = this.groupRepository.GetById(groupId).Result;
             var memberCount = group.UserGroups.Count;
-            var operations = group.Operations
-                .ToList();
+            //var operations = group.Operations
+            //    .ToList();
 
-            var userPayments = operations.Where(x => x.Owner.Id == userId)
-                .Sum(x => x.Amount);
+            //var userPayments = operations.Where(x => x.Owner.Id == userId)
+            //    .Sum(x => x.Amount);
 
-            var otherOperations = operations.Where(x => x.Owner.Id != userId).GroupBy(x => x.Owner).ToList();
+            //var otherOperations = operations.Where(x => x.Owner.Id != userId).GroupBy(x => x.Owner).ToList();
 
-            var debt = otherOperations.ToDictionary(x => x.Key, x => (x.Sum(s => s.Amount) / memberCount) - (userPayments/ memberCount));
+            //var debt = otherOperations.ToDictionary(x => x.Key, x => (x.Sum(s => s.Amount) / memberCount) - (userPayments/ memberCount));
         }
 
         //test
@@ -71,6 +84,11 @@ namespace SplitSchmeisser.BLL.Implementation
             public int id { get; set; }
 
             public int amount { get; set; }
+        }
+
+        public User GetCurrUser()
+        {
+            return this.userRepository.GetAll().First(x => x.UserName == "Admin");
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SplitSchmeisser.DAL.Context;
 using SplitSchmeisser.DAL.Entities.Base;
+using SplitSchmeisser.DAL.Extentions;
+using SplitSchmeisser.DAL.Infrasructure;
 using SplitSchmeisser.DAL.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,13 +21,20 @@ namespace SplitSchmeisser.DAL.Repositories
 
         public IQueryable<TEntity> GetAll()
         {
-            return context.Set<TEntity>().AsNoTracking();
+            return context.Set<TEntity>().IncludeAll();
+        }
+
+        public PagedList<TEntity> GetPagedList(int pageSize, int pageIndex)
+        {
+            var count = this.GetAll().Count();
+            var items = this.GetAll().Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+
+            return new PagedList<TEntity>(items, count, pageIndex, pageSize);
         }
 
         public async Task<TEntity> GetById(int id)
         {
-            return await context.Set<TEntity>()
-                        .AsNoTracking()
+            return await context.Set<TEntity>().IncludeAll()
                         .FirstOrDefaultAsync(e => e.Id == id);
         }
 

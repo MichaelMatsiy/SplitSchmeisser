@@ -5,6 +5,11 @@ namespace SplitSchmeisser.DAL.Entities
 {
     public class Group : BaseEntity
     {
+        public Group()
+        {
+            this.UserGroups = new List<UserGroup>();
+            this.Operations = new List<Operation>();
+        }
         public string GroupName { get; set; }
 
         public virtual ICollection<UserGroup> UserGroups { get; set; }

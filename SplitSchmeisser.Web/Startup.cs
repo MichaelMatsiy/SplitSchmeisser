@@ -38,10 +38,13 @@ namespace SplitSchmeisser.Web
             });
 
             services.AddDbContext<SchmeisserContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options
+                //.UseLazyLoadingProxies()
+                .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IGroupServise, GroupService>();
+            services.AddTransient<IUserServise, UserServise>();
 
 
 

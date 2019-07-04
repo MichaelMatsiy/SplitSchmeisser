@@ -1,5 +1,6 @@
 ﻿using SplitSchmeisser.BLL.Models;
 using SplitSchmeisser.DAL.Entities;
+using SplitSchmeisser.DAL.Infrasructure;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,12 +10,14 @@ namespace SplitSchmeisser.BLL.Interfaces
 {
     public interface IGroupServise
     {
-        void CreateGroup(string name, IList<int> userIds);
+        Task CreateGroup(string name, IList<int> userIds, double amount);
 
         void AddUserToGroup(int groupId, int userId);
 
         IList<GroupDTO> GetGroups();
 
         void UpdateGroup(GroupDTO group);
+
+        Task<GroupDTO> GetGroupById(int id);
     }
 }

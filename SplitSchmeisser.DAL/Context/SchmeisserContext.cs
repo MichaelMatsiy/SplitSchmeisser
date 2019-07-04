@@ -12,7 +12,13 @@ namespace SplitSchmeisser.DAL.Context
         public DbSet<User> Users { get; set; }
         public DbSet<Group> Groups { get; set; }
 
-        public SchmeisserContext(DbContextOptions<SchmeisserContext> options) : base(options) { }
+        public SchmeisserContext(DbContextOptions<SchmeisserContext> options) : base(options) {
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            //optionsBuilder.UseLazyLoadingProxies();
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -29,7 +35,7 @@ namespace SplitSchmeisser.DAL.Context
                 .WithMany(x => x.UserGroups)
                 .HasForeignKey(x => x.GroupId);
 
-
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

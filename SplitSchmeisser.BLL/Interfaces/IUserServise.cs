@@ -1,8 +1,10 @@
-﻿using System;
+﻿using SplitSchmeisser.BLL.Models;
+using SplitSchmeisser.DAL.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SplitSchmeisser.DAL.Interfaces
+namespace SplitSchmeisser.BLL.Interfaces
 {
     public interface IUserServise
     {
@@ -10,6 +12,9 @@ namespace SplitSchmeisser.DAL.Interfaces
 
         void GetUserDebsByGroupPerUrers(int userId, int groupId);
 
+        IList<UserDTO> GetUsers();
+
+        User GetCurrUser();
         //void GetUsersByGroup(int groupId);
     }
 }

@@ -2,6 +2,7 @@
 using SplitSchmeisser.DAL.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SplitSchmeisser.DAL
@@ -12,23 +13,35 @@ namespace SplitSchmeisser.DAL
         {
             context.Database.EnsureCreated();
 
+            if (context.Groups.Any())
+            {
+                return; 
+            }
+
 
             var groups = new Group[]
             {
-            new Group{GroupName="Carson"},
-            new Group{GroupName="Meredith"},
-            new Group{GroupName="Arturo"},
-            new Group{GroupName="Gytis"},
-            new Group{GroupName="Yan"},
-            new Group{GroupName="Peggy"},
-            new Group{GroupName="Laura"},
-            new Group{GroupName="Nino"}
+                new Group{GroupName="Carson"},
+                new Group{GroupName="Meredith"},
+                new Group{GroupName="Arturo"},
+                new Group{GroupName="Gytis"},
+                new Group{GroupName="Yan"},
+                new Group{GroupName="Peggy"},
+                new Group{GroupName="Laura"},
+                new Group{GroupName="Nino"}
             };
 
-            foreach (Group g in groups)
+            var users = new User[]
             {
-                context.Groups.Add(g);
-            }
+                new User{ UserName = "Admin" },
+                new User{ UserName = "Jhon"},
+                new User{ UserName = "Mark"},
+                new User{ UserName = "Kevin"}
+            };
+
+            context.Groups.AddRange(groups);
+            context.Users.AddRange(users);
+
             context.SaveChanges();
         }
     }

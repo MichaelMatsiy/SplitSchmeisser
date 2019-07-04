@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SplitSchmeisser.BLL.Interfaces;
 using SplitSchmeisser.Web.Models;
 
@@ -11,10 +12,13 @@ namespace SplitSchmeisser.Web.Controllers
     public class GroupController : Controller
     {
         IGroupServise groupService;
+        IUserServise userService;
 
-        public GroupController(IGroupServise groupService)
+
+        public GroupController(IGroupServise groupService, IUserServise userService)
         {
             this.groupService = groupService;
+            this.userService = userService;
         }
 
         public IActionResult Index()
@@ -28,8 +32,9 @@ namespace SplitSchmeisser.Web.Controllers
             return View("MyGroups", gr);
         }
 
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
+            var gr1 = await groupService.GetGroupById(id);
             var gr = groupService.GetGroups()
                 .Where(x => x.Id == id)
                 .Select(x => new GroupViewModel
@@ -44,31 +49,45 @@ namespace SplitSchmeisser.Web.Controllers
 
         public IActionResult Create()
         {
-            throw new NotImplementedException();
-        }
-
-        public IActionResult Edit(int id)
-        {
-            var gr = groupService.GetGroups()
-                .Where(x => x.Id == id)
-                .Select(x => new GroupViewModel
-                {
-                    Id = x.Id,
-                    GroupName = x.Name
+            var users = this.userService.GetUsers();
+            var model = new CreateGroupModel {
+                Users = users.Select(x=> new SelectListItem {
+                    Text = x.Name,
+                    Value = x.Id.ToString()
                 })
-            .FirstOrDefault();
+                .ToList()
+            };
 
-            return View("Edit", gr);
+            return View(model);
         }
         [HttpPost]
+        public async Task<IActionResult> Create(CreateGroupModel group)
+        {
+            await this.groupService.CreateGroup(group.GroupName, group.UserIds, group.Amount);
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var gr = await groupService.GetGroupById(id);
+
+            var model = new GroupViewModel
+            {
+                GroupName = gr.Name
+            };
+
+            return View("Edit", model);
+        }
+
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,GroupName")] GroupViewModel group)
+        public IActionResult Edit(int id, [Bind("Id,GroupName")] GroupViewModel group)
         {
             if (id != group.Id)
             {
                 return NotFound();
             }
-            
+
             if (ModelState.IsValid)
             {
                 groupService.UpdateGroup(new BLL.Models.GroupDTO { Id = group.Id, Name = group.GroupName });

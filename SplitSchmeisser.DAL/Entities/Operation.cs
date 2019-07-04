@@ -6,8 +6,9 @@ namespace SplitSchmeisser.DAL.Entities
 {
     public class Operation : BaseEntity
     {
-        public User Owner { get; set; }
-        public Group Group { get; set; }
+        public virtual User Owner { get; set; }
+        public int OwnerId { get; set; }
+        public virtual Group Group { get; set; }
         public DateTime DateOfLoan { get; set; }
         public double Amount { get; set; }
         public string Description { get; set; }
