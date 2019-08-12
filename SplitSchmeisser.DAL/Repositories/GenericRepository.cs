@@ -44,6 +44,15 @@ namespace SplitSchmeisser.DAL.Repositories
             await context.SaveChangesAsync();
         }
 
+        //TODO: investidate
+        //method was added to create new users in a sync mode
+        //issue with Async creation
+        public void InsertSync(TEntity entity)
+        {
+            context.Set<TEntity>().Add(entity);
+            context.SaveChanges();
+        }
+
         public async Task Update(TEntity entity)
         {
             context.Set<TEntity>().Update(entity);
@@ -56,5 +65,7 @@ namespace SplitSchmeisser.DAL.Repositories
             context.Set<TEntity>().Remove(entity);
             await context.SaveChangesAsync();
         }
+
+        
     }
 }

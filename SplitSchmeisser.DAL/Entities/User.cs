@@ -11,6 +11,8 @@ namespace SplitSchmeisser.DAL.Entities
         }
         public string UserName { get; set; }
 
+        public string UserPassword { get; set; }
+
         public virtual ICollection<UserGroup> UserGroups { get; set; }
     }
 }

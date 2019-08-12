@@ -7,8 +7,16 @@
     <div class="container">
         @if (Model != null && Model.Any())
         {
-            <h1>@ViewData["Title"]</h1>
-            <table class="table">
+
+            <h1 class="d-inline">@ViewData["Title"]</h1>
+            <form class="d-inline float-right">
+                <a asp-action="Create" asp-controller="Group" style="text-decoration: none;">
+                    <img src="~/icons/edit.png" alt="Edit" width="20" height="20" title="Create a new group" /> Add expense
+                </a>
+            </form>
+
+
+            <table class="table mt-1" >
                 <tbody>
                     @foreach (var item in Model)
                     {
@@ -20,7 +28,7 @@
                                 <a asp-action="Details" asp-route-id="@item.Id" style="text-decoration: none;">
                                     @Html.DisplayFor(modelItem => item.GroupName)
                                 </a>
-                                
+
                             </td>
                             <td style="text-align: right;">
                                 <a asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none;">

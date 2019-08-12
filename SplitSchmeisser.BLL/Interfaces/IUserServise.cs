@@ -3,6 +3,7 @@ using SplitSchmeisser.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SplitSchmeisser.BLL.Interfaces
 {
@@ -16,5 +17,9 @@ namespace SplitSchmeisser.BLL.Interfaces
 
         User GetCurrUser();
         //void GetUsersByGroup(int groupId);
+
+        void CreateUserAsync(string name, string password);
+
+        bool ValidateUser(string userNmae, string password);
     }
 }

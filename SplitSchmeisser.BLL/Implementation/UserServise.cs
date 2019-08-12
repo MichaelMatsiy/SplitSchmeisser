@@ -4,6 +4,7 @@ using SplitSchmeisser.DAL.Entities;
 using SplitSchmeisser.DAL.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SplitSchmeisser.BLL.Implementation
 {
@@ -89,6 +90,21 @@ namespace SplitSchmeisser.BLL.Implementation
         public User GetCurrUser()
         {
             return this.userRepository.GetAll().First(x => x.UserName == "Admin");
+        }
+
+        public void CreateUserAsync(string name, string password)
+        {
+            this.userRepository.InsertSync(new User()
+            {
+                UserName = name,
+                UserPassword = password
+            });
+        }
+
+        public bool ValidateUser(string userName, string password) {
+            return this.userRepository.GetAll()
+                .FirstOrDefault(x => x.UserName == userName && x.UserPassword == password) 
+                != null;
         }
     }
 }

@@ -16,9 +16,6 @@
                 <input asp-for="GroupName" class="form-control" />
                 <span asp-validation-for="GroupName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
             <div>
                 <select asp-for="UserIds" asp-items="Model.Users" multiple></select>
             </div>
@@ -27,11 +24,16 @@
                 <input asp-for="Amount" class="form-control" />
                 <span asp-validation-for="Amount" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
         </form>
     </div>
 </div>
 
 <div>
+    
+    
     <a asp-action="Index">Back to List</a>
 </div>
 

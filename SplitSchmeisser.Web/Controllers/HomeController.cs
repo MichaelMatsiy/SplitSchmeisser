@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SplitSchmeisser.BLL.Interfaces;
 using SplitSchmeisser.Web.Models;
 
 namespace SplitSchmeisser.Web.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         IGroupServise groupService;
@@ -20,9 +22,13 @@ namespace SplitSchmeisser.Web.Controllers
 
         public IActionResult Index()
         {
-            var test = this.groupService.GetGroups();
+            var gr = groupService.GetGroups().Select(x => new GroupViewModel
+            {
+                Id = x.Id,
+                GroupName = x.Name
+            }).ToList();
 
-            return View();
+            return View(gr);
         }
 
         public IActionResult Privacy()
