@@ -10,7 +10,7 @@ using SplitSchmeisser.Web.Models;
 
 namespace SplitSchmeisser.Web.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class HomeController : Controller
     {
         IGroupServise groupService;

@@ -11,17 +11,25 @@ namespace SplitSchmeisser.DAL
     {
         public static void Initialize(SchmeisserContext context)
         {
-            context.Database.EnsureCreated();
+            //context.Database.EnsureCreated();
 
             if (context.Groups.Any())
             {
-                return; 
+                return;
             }
+
+            var users = new User[]
+            {
+                new User{ UserName = "Admin", UserPassword="Admin" },
+                new User{ UserName = "Jhon"},
+                new User{ UserName = "Mark"},
+                new User{ UserName = "Kevin"}
+            };
 
 
             var groups = new Group[]
             {
-                new Group{GroupName="Carson"},
+                new Group{GroupName="Carson", Users = users},
                 new Group{GroupName="Meredith"},
                 new Group{GroupName="Arturo"},
                 new Group{GroupName="Gytis"},
@@ -29,14 +37,6 @@ namespace SplitSchmeisser.DAL
                 new Group{GroupName="Peggy"},
                 new Group{GroupName="Laura"},
                 new Group{GroupName="Nino"}
-            };
-
-            var users = new User[]
-            {
-                new User{ UserName = "Admin" },
-                new User{ UserName = "Jhon"},
-                new User{ UserName = "Mark"},
-                new User{ UserName = "Kevin"}
             };
 
             context.Groups.AddRange(groups);

@@ -10,7 +10,7 @@ using SplitSchmeisser.Web.Models;
 
 namespace SplitSchmeisser.Web.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class GroupController : Controller
     {
         IGroupServise groupService;
@@ -36,17 +36,15 @@ namespace SplitSchmeisser.Web.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var gr1 = await groupService.GetGroupById(id);
-            var gr = groupService.GetGroups()
-                .Where(x => x.Id == id)
-                .Select(x => new GroupViewModel
-                {
-                    Id = x.Id,
-                    GroupName = x.Name
-                })
-            .FirstOrDefault();
+            var group = await groupService.GetGroupById(id);
 
-            return View("Details", gr);
+            var debts = group.Users.Select(x => new
+            {
+                userName = x.Name,
+                debt = this.userService.GetUserDebsByGroup(x.Id, group.Id)
+            }).ToList();
+
+            return View("Details", GroupViewModel.FromDTO(group));
         }
 
         public IActionResult Create()

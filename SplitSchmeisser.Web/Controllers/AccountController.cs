@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using SplitSchmeisser.BLL;
 using SplitSchmeisser.BLL.Interfaces;
 using SplitSchmeisser.Web.Models;
 
@@ -44,6 +45,7 @@ namespace SplitSchmeisser.Web.Controllers
                 var principal = new ClaimsPrincipal(identity);
 
                 var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                CurrentUserService.UserName = userName;
 
                 return RedirectToAction("Index", "Home");
             }
@@ -63,9 +65,10 @@ namespace SplitSchmeisser.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Registration(CreateUserModel user)
+        public async Task<IActionResult> Registration(CreateUserModel user)
         {
-            this.userService.CreateUserAsync(user.UserName, user.UserPassword);
+            await this.userService.CreateUserAsync(user.UserName, user.UserPassword);
+
             return RedirectToAction("Login");
         }
     }

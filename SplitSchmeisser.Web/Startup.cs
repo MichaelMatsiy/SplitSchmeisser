@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SplitSchmeisser.BLL.Implementation;
@@ -16,6 +9,8 @@ using SplitSchmeisser.BLL.Interfaces;
 using SplitSchmeisser.DAL.Context;
 using SplitSchmeisser.DAL.Interfaces;
 using SplitSchmeisser.DAL.Repositories;
+using Microsoft.AspNetCore.Builder;
+
 
 namespace SplitSchmeisser.Web
 {
@@ -38,10 +33,11 @@ namespace SplitSchmeisser.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<SchmeisserContext>(options =>
-                options
-                //.UseLazyLoadingProxies()
-                .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped(provider =>
+            {
+                var connectionString = Configuration.GetConnectionString("DefaultConnection");
+                return new SchmeisserContext(connectionString);
+            });
 
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IGroupServise, GroupService>();

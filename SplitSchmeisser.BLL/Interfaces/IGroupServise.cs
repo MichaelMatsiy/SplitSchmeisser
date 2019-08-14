@@ -12,7 +12,7 @@ namespace SplitSchmeisser.BLL.Interfaces
     {
         Task CreateGroup(string name, IList<int> userIds, double amount);
 
-        void AddUserToGroup(int groupId, int userId);
+        Task AddUserToGroup(int groupId, int userId);
 
         IList<GroupDTO> GetGroups();
 

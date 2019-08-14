@@ -1,10 +1,13 @@
-﻿using SplitSchmeisser.BLL.Interfaces;
+﻿using Microsoft.AspNetCore.Http;
+using SplitSchmeisser.BLL.Interfaces;
 using SplitSchmeisser.BLL.Models;
 using SplitSchmeisser.DAL.Entities;
 using SplitSchmeisser.DAL.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
+
 
 namespace SplitSchmeisser.BLL.Implementation
 {
@@ -24,31 +27,31 @@ namespace SplitSchmeisser.BLL.Implementation
 
         public IList<UserDTO> GetUsers()
         {
-            return this.userRepository.GetAll()
+            return this.userRepository.GetAll().ToList()
                 .Select(x => UserDTO.FromEntity(x))
                 .ToList();
         }
 
-        public void GetUserDebsByGroup(int userId, int groupId)
+        public double GetUserDebsByGroup(int userId, int groupId)
         {
             var group = this.groupRepository.GetById(groupId).Result;
-            var memberCount = group.UserGroups.Count;
-            //var operations = group.Operations
-            //    .ToList();
+            var memberCount = group.Users.Count();
+            var operations = group.Operations
+                .ToList();
 
-            //var userPayments = operations.Where(x => x.Owner.Id == userId)
-            //    .Sum(x => x.Amount);
+            var userPayments = operations.Where(x => x.Owner.Id == userId)
+                .Sum(x => x.Amount);
 
-            //var otherPayments = operations.Where(x => x.Owner.Id != userId)
-            //    .Sum(x => x.Amount);
+            var otherPayments = operations.Where(x => x.Owner.Id != userId)
+                .Sum(x => x.Amount);
 
-           //var debt = userPayments - otherPayments;
+            return (otherPayments / memberCount) - (userPayments / memberCount);
         }
 
         public void GetUserDebsByGroupPerUrers(int userId, int groupId)
         {
             var group = this.groupRepository.GetById(groupId).Result;
-            var memberCount = group.UserGroups.Count;
+            //var memberCount = group.UserGroups.Count;
             //var operations = group.Operations
             //    .ToList();
 
@@ -89,12 +92,12 @@ namespace SplitSchmeisser.BLL.Implementation
 
         public User GetCurrUser()
         {
-            return this.userRepository.GetAll().First(x => x.UserName == "Admin");
+            return  this.userRepository.GetAll().First(x => x.UserName == CurrentUserService.UserName);
         }
 
-        public void CreateUserAsync(string name, string password)
+        public async Task CreateUserAsync(string name, string password)
         {
-            this.userRepository.InsertSync(new User()
+            await this.userRepository.Insert(new User()
             {
                 UserName = name,
                 UserPassword = password

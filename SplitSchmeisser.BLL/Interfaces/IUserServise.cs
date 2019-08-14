@@ -9,7 +9,7 @@ namespace SplitSchmeisser.BLL.Interfaces
 {
     public interface IUserServise
     {
-        void GetUserDebsByGroup(int userId, int groupId);
+        double GetUserDebsByGroup(int userId, int groupId);
 
         void GetUserDebsByGroupPerUrers(int userId, int groupId);
 
@@ -18,7 +18,7 @@ namespace SplitSchmeisser.BLL.Interfaces
         User GetCurrUser();
         //void GetUsersByGroup(int groupId);
 
-        void CreateUserAsync(string name, string password);
+        Task CreateUserAsync(string name, string password);
 
         bool ValidateUser(string userNmae, string password);
     }

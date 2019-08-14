@@ -29,18 +29,19 @@ namespace SplitSchmeisser.BLL.Implementation
             this.userServise = userServise;
         }
 
-        public void AddUserToGroup(int groupId, int userId)
+        public async Task AddUserToGroup(int groupId, int userId)
         {
             var group = groupRepository.GetById(groupId).Result;
+            var user =  await this.userRepository.GetById(userId);
 
-            group.UserGroups.Add(new UserGroup { GroupId = groupId, UserId = userId });
+            group.Users.Add(user);
 
-            groupRepository.Update(group);
+            await groupRepository.UpdateAsync(group);
         }
 
         public async Task CreateGroup(string name, IList<int> userIds, double amount)
         {
-            var users = this.userRepository.GetAll().Where(x => userIds.Contains(x.Id));
+            var users = this.userRepository.GetAll().Where(x => userIds.Contains(x.Id)).ToList();
             var currUser = this.userServise.GetCurrUser();
 
             var operation = new Operation
@@ -50,27 +51,26 @@ namespace SplitSchmeisser.BLL.Implementation
                 OwnerId = currUser.Id
             };
 
-            var group = new Group();
-            group.GroupName = name;
-
-            foreach (var user in users)
-            {
-                group.UserGroups.Add(new UserGroup { Group = group, UserId = user.Id });
-            }
+            var group = new Group {
+                GroupName = name,
+                Users = users
+            };
 
             group.Operations.Add(operation);
+            group.Users.Add(currUser);
 
             await this.groupRepository.Insert(group);
         }
 
         public void UpdateGroup(GroupDTO group)
         {
-            this.groupRepository.Update(new Group { Id = group.Id, GroupName = group.Name });
+            this.groupRepository.UpdateAsync(new Group { Id = group.Id, GroupName = group.Name });
         }
 
         public IList<GroupDTO> GetGroups()
         {
             var result = this.groupRepository.GetAll()
+                .ToList()
                 .Select(x => GroupDTO.FromEntity(x))
                 .ToList();
 

@@ -1,5 +1,6 @@
 ﻿using SplitSchmeisser.DAL.Entities.Base;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SplitSchmeisser.DAL.Entities
 {
@@ -7,12 +8,13 @@ namespace SplitSchmeisser.DAL.Entities
     {
         public User()
         {
-            this.UserGroups = new List<UserGroup>();
+            this.Groups = new List<Group>();
         }
         public string UserName { get; set; }
 
         public string UserPassword { get; set; }
 
-        public virtual ICollection<UserGroup> UserGroups { get; set; }
+        [NotMapped]
+        public virtual ICollection<Group> Groups { get; set; }
     }
 }
