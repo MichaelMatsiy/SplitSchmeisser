@@ -1,6 +1,4 @@
-﻿
-using Microsoft.EntityFrameworkCore;
-using SplitSchmeisser.BLL.Interfaces;
+﻿using SplitSchmeisser.BLL.Interfaces;
 using SplitSchmeisser.BLL.Models;
 using SplitSchmeisser.DAL.Entities;
 using SplitSchmeisser.DAL.Interfaces;
@@ -11,22 +9,24 @@ using System.Threading.Tasks;
 
 namespace SplitSchmeisser.BLL.Implementation
 {
-    public class GroupService : IGroupServise
+    public class GroupService : IGroupService
     {
         private IGenericRepository<Group> groupRepository;
         private IGenericRepository<User> userRepository;
 
-        private IUserServise userServise;
-
+        private IUserService userService;
+        private IOperationService operationService;
 
         public GroupService(
             IGenericRepository<Group> groupRepository,
             IGenericRepository<User> userRepository,
-             IUserServise userServise)
+            IUserService userService,
+            IOperationService operationService)
         {
             this.groupRepository = groupRepository;
             this.userRepository = userRepository;
-            this.userServise = userServise;
+            this.userService = userService;
+            this.operationService = operationService;
         }
 
         public async Task AddUserToGroup(int groupId, int userId)
@@ -42,7 +42,7 @@ namespace SplitSchmeisser.BLL.Implementation
         public async Task CreateGroup(string name, IList<int> userIds, double amount)
         {
             var users = this.userRepository.GetAll().Where(x => userIds.Contains(x.Id)).ToList();
-            var currUser = this.userServise.GetCurrUser();
+            var currUser = this.userService.GetCurrUser();
 
             var operation = new Operation
             {
@@ -80,8 +80,11 @@ namespace SplitSchmeisser.BLL.Implementation
         public async Task<GroupDTO> GetGroupById(int id)
         {
             var group = await this.groupRepository.GetById(id);
+            var groupDto = GroupDTO.FromEntity(group);
 
-            return GroupDTO.FromEntity(group);
+            groupDto.UserDebts = this.operationService.GetUsersDebtByGroup(groupDto);
+
+            return groupDto;
         }
     }
 }

@@ -40,8 +40,9 @@ namespace SplitSchmeisser.Web
             });
 
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            services.AddTransient<IGroupServise, GroupService>();
-            services.AddTransient<IUserServise, UserServise>();
+            services.AddTransient<IGroupService, GroupService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IOperationService, OperationService>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 

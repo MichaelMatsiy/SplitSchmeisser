@@ -13,11 +13,10 @@ namespace SplitSchmeisser.Web.Controllers
     //[Authorize]
     public class GroupController : Controller
     {
-        IGroupServise groupService;
-        IUserServise userService;
+        IGroupService groupService;
+        IUserService userService;
 
-
-        public GroupController(IGroupServise groupService, IUserServise userService)
+        public GroupController(IGroupService groupService, IUserService userService)
         {
             this.groupService = groupService;
             this.userService = userService;
@@ -37,13 +36,6 @@ namespace SplitSchmeisser.Web.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var group = await groupService.GetGroupById(id);
-
-            var debts = group.Users.Select(x => new
-            {
-                userName = x.Name,
-                debt = this.userService.GetUserDebsByGroup(x.Id, group.Id)
-            }).ToList();
-
             return View("Details", GroupViewModel.FromDTO(group));
         }
 

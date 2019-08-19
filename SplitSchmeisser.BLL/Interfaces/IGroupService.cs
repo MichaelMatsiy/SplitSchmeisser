@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SplitSchmeisser.BLL.Interfaces
 {
-    public interface IGroupServise
+    public interface IGroupService
     {
         Task CreateGroup(string name, IList<int> userIds, double amount);
 

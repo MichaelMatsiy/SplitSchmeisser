@@ -11,6 +11,6 @@ namespace SplitSchmeisser.BLL.Interfaces
 
         IList<OperationDTO> GetAllUsersOperations(int userId);
 
-        IList<OperationDTO> GetAllUsersDebts(int userId);
+        IDictionary<string, double> GetUsersDebtByGroup(GroupDTO groupDto);
     }
 }

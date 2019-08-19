@@ -12,9 +12,9 @@ namespace SplitSchmeisser.Web.Controllers
 {
     public class AccountController : Controller
     {
-        IUserServise userService;
+        IUserService userService;
 
-        public AccountController(IUserServise userService)
+        public AccountController(IUserService userService)
         {
             this.userService = userService;
         }

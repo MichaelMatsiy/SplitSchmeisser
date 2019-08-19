@@ -1,24 +1,19 @@
-﻿using Microsoft.AspNetCore.Http;
-using SplitSchmeisser.BLL.Interfaces;
+﻿using SplitSchmeisser.BLL.Interfaces;
 using SplitSchmeisser.BLL.Models;
 using SplitSchmeisser.DAL.Entities;
 using SplitSchmeisser.DAL.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
-
 
 namespace SplitSchmeisser.BLL.Implementation
 {
-    public class UserServise : IUserServise
+    public class UserService : IUserService
     {
-        private IGenericRepository<Operation> operationRepository;
         private IGenericRepository<Group> groupRepository;
         private IGenericRepository<User> userRepository;
 
-
-        public UserServise(IGenericRepository<Group> groupRepository,
+        public UserService(IGenericRepository<Group> groupRepository,
             IGenericRepository<User> userRepository)
         {
             this.groupRepository = groupRepository;

@@ -29,7 +29,10 @@
             <span>Members:</span>
         </dt>
         <dd class="col-sm-10">
-
+            @foreach (var user in @Model.Debts)
+            {
+                <p>@user.Key  : @user.Value</p>
+            }
         </dd>
     </dl>
 </div>

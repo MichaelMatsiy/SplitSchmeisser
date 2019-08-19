@@ -13,9 +13,9 @@ namespace SplitSchmeisser.Web.Controllers
     //[Authorize]
     public class HomeController : Controller
     {
-        IGroupServise groupService;
+        IGroupService groupService;
 
-        public HomeController(IGroupServise groupService)
+        public HomeController(IGroupService groupService)
         {
             this.groupService = groupService;
         }

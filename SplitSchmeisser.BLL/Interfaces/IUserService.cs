@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SplitSchmeisser.BLL.Interfaces
 {
-    public interface IUserServise
+    public interface IUserService
     {
         double GetUserDebsByGroup(int userId, int groupId);
 

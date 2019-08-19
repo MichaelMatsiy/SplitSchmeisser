@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SplitSchmeisser.BLL.Interfaces;
 using SplitSchmeisser.BLL.Models;
@@ -11,10 +12,14 @@ namespace SplitSchmeisser.BLL.Implementation
     {
         private IGenericRepository<Operation> operationRepository;
 
+        private IUserService userService;
+
         public OperationService(
-           IGenericRepository<Operation> operationRepository)
+           IGenericRepository<Operation> operationRepository,
+           IUserService userService)
         {
             this.operationRepository = operationRepository;
+            this.userService = userService;
         }
 
         public IList<OperationDTO> GetAll()
@@ -35,9 +40,18 @@ namespace SplitSchmeisser.BLL.Implementation
                .ToList();
         }
 
-        public IList<OperationDTO> GetAllUsersDebts(int userId)
+        public IDictionary<string, double> GetUsersDebtByGroup(GroupDTO groupDto)
         {
-            throw new System.NotImplementedException();
+            IDictionary<string, double> userDebts = new Dictionary<string, double>();
+
+            foreach (var item in groupDto.Users)
+            {
+                var debt = this.userService.GetUserDebsByGroup(item.Id, groupDto.Id);
+
+                userDebts.Add(item.Name, Math.Max(0, debt));
+            }
+
+            return userDebts;
         }
 
         public IList<OperationDTO> GetAllUsersOperations(int userId)
