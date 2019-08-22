@@ -20,23 +20,23 @@ namespace SplitSchmeisser.DAL
 
             var users = new User[]
             {
-                new User{ UserName = "Admin", UserPassword="Admin" },
-                new User{ UserName = "Jhon"},
-                new User{ UserName = "Mark"},
-                new User{ UserName = "Kevin"}
+                new User{ Name = "Admin", Password="Admin" },
+                new User{ Name = "Jhon", Password="Admin" },
+                new User{ Name = "Mark", Password="Admin" },
+                new User{ Name = "Kevin", Password="Admin" }
             };
 
 
             var groups = new Group[]
             {
-                new Group{GroupName="Carson", Users = users},
-                new Group{GroupName="Meredith"},
-                new Group{GroupName="Arturo"},
-                new Group{GroupName="Gytis"},
-                new Group{GroupName="Yan"},
-                new Group{GroupName="Peggy"},
-                new Group{GroupName="Laura"},
-                new Group{GroupName="Nino"}
+                new Group{Name="Carson", Users = users},
+                new Group{Name="Meredith"},
+                new Group{Name="Arturo"},
+                new Group{Name="Gytis"},
+                new Group{Name="Yan"},
+                new Group{Name="Peggy"},
+                new Group{Name="Laura"},
+                new Group{Name="Nino"}
             };
 
             context.Groups.AddRange(groups);

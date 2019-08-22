@@ -52,7 +52,7 @@ namespace SplitSchmeisser.BLL.Implementation
             };
 
             var group = new Group {
-                GroupName = name,
+                Name = name,
                 Users = users
             };
 
@@ -64,7 +64,7 @@ namespace SplitSchmeisser.BLL.Implementation
 
         public void UpdateGroup(GroupDTO group)
         {
-            this.groupRepository.UpdateAsync(new Group { Id = group.Id, GroupName = group.Name });
+            this.groupRepository.UpdateAsync(new Group { Id = group.Id, Name = group.Name });
         }
 
         public IList<GroupDTO> GetGroups()
@@ -85,6 +85,10 @@ namespace SplitSchmeisser.BLL.Implementation
             groupDto.UserDebts = this.operationService.GetUsersDebtByGroup(groupDto);
 
             return groupDto;
+        }
+
+        public async Task Delete(int id) {
+            await this.groupRepository.Delete(id);
         }
     }
 }

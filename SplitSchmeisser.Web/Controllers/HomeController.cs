@@ -25,7 +25,7 @@ namespace SplitSchmeisser.Web.Controllers
             var gr = groupService.GetGroups().Select(x => new GroupViewModel
             {
                 Id = x.Id,
-                GroupName = x.Name
+                Name = x.Name
             }).ToList();
 
             return View(gr);

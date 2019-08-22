@@ -12,7 +12,7 @@ namespace SplitSchmeisser.BLL.Models
         {
             return new UserDTO {
                 Id = user.Id,
-                Name = user.UserName
+                Name = user.Name
             };
         }
     }

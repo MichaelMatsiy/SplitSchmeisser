@@ -23,7 +23,7 @@ namespace SplitSchmeisser.BLL.Models
             return new GroupDTO
             {
                 Id = group.Id,
-                Name = group.GroupName,
+                Name = group.Name,
                 Users = group.Users.Select(x => UserDTO.FromEntity(x)).ToList()
             };
         }

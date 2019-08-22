@@ -67,7 +67,7 @@ namespace SplitSchmeisser.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Registration(CreateUserModel user)
         {
-            await this.userService.CreateUserAsync(user.UserName, user.UserPassword);
+            await this.userService.CreateUserAsync(user.Name, user.Password);
 
             return RedirectToAction("Login");
         }

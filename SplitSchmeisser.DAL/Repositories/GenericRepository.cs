@@ -1,9 +1,7 @@
 ﻿using SplitSchmeisser.DAL.Context;
 using SplitSchmeisser.DAL.Entities.Base;
-using SplitSchmeisser.DAL.Extentions;
 using SplitSchmeisser.DAL.Infrasructure;
 using SplitSchmeisser.DAL.Interfaces;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -40,15 +38,6 @@ namespace SplitSchmeisser.DAL.Repositories
         {
             context.Set<TEntity>().Add(entity);
             await context.SaveChangesAsync();
-        }
-
-        //TODO: investidate
-        //method was added to create new users in a sync mode
-        //issue with Async creation
-        public void InsertSync(TEntity entity)
-        {
-            context.Set<TEntity>().Add(entity);
-            context.SaveChanges();
         }
 
         public async Task<TEntity> UpdateAsync(TEntity entity)

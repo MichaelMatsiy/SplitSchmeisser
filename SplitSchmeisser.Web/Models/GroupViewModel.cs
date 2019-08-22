@@ -6,7 +6,7 @@ namespace SplitSchmeisser.Web.Models
     public class GroupViewModel
     {
         public int Id { get; set; }
-        public string GroupName { get; set; }
+        public string Name { get; set; }
 
         public IDictionary<string, double> Debts { get; set; }
 
@@ -14,7 +14,7 @@ namespace SplitSchmeisser.Web.Models
         {
             return new GroupViewModel
             {
-                GroupName = dto.Name,
+                Name = dto.Name,
                 Debts = dto.UserDebts
             };
         }

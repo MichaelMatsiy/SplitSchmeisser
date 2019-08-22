@@ -8,7 +8,7 @@ namespace SplitSchmeisser.Web.Models
 {
     public class CreateGroupModel
     {
-        public string GroupName { get; set; }
+        public string Name { get; set; }
 
         public double Amount { get; set; }
 

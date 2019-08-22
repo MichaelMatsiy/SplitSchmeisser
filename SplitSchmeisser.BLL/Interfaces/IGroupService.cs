@@ -1,9 +1,5 @@
 ﻿using SplitSchmeisser.BLL.Models;
-using SplitSchmeisser.DAL.Entities;
-using SplitSchmeisser.DAL.Infrasructure;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SplitSchmeisser.BLL.Interfaces
@@ -19,5 +15,7 @@ namespace SplitSchmeisser.BLL.Interfaces
         void UpdateGroup(GroupDTO group);
 
         Task<GroupDTO> GetGroupById(int id);
+
+        Task Delete(int id);
     }
 }

@@ -15,7 +15,7 @@ namespace SplitSchmeisser.Web.Models
         }
 
         public int Id { get; set; }
-        public string UserName { get; set; }
+        public string Name { get; set; }
 
         public List<SelectListItem> Groups { get; set; }
 
@@ -23,7 +23,7 @@ namespace SplitSchmeisser.Web.Models
         {
             return new UserViewModel
             {
-                UserName = dto.Name
+                Name = dto.Name
             };
         }
     }

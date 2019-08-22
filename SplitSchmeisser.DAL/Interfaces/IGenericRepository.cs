@@ -15,7 +15,6 @@ namespace SplitSchmeisser.DAL.Interfaces
         Task<TEntity> GetById(int id);
 
         Task Insert(TEntity entity);
-        void InsertSync(TEntity entity);
 
         Task<TEntity> UpdateAsync(TEntity entity);
 

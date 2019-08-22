@@ -27,7 +27,7 @@ namespace SplitSchmeisser.Web.Controllers
             var gr = groupService.GetGroups().Select(x => new GroupViewModel
             {
                 Id = x.Id,
-                GroupName = x.Name
+                Name = x.Name
             }).ToList();
 
             return View("MyGroups", gr);
@@ -55,7 +55,7 @@ namespace SplitSchmeisser.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateGroupModel group)
         {
-            await this.groupService.CreateGroup(group.GroupName, group.UserIds, group.Amount);
+            await this.groupService.CreateGroup(group.Name, group.UserIds, group.Amount);
             return RedirectToAction("Index");
         }
 
@@ -65,7 +65,7 @@ namespace SplitSchmeisser.Web.Controllers
 
             var model = new GroupViewModel
             {
-                GroupName = gr.Name
+                Name = gr.Name
             };
 
             return View("Edit", model);
@@ -82,15 +82,16 @@ namespace SplitSchmeisser.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                groupService.UpdateGroup(new BLL.Models.GroupDTO { Id = group.Id, Name = group.GroupName });
+                groupService.UpdateGroup(new BLL.Models.GroupDTO { Id = group.Id, Name = group.Name });
                 return RedirectToAction(nameof(Index));
             }
             return View(group);
         }
 
-        public IActionResult Delete()
+        public async Task<IActionResult> Delete(int id)
         {
-            throw new NotImplementedException();
+            await this.groupService.Delete(id);
+            return RedirectToAction("Index");
         }
     }
 }

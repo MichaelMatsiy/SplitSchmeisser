@@ -6,7 +6,7 @@
 
 
 <div>
-    <a asp-action="Index" style="text-decoration: none; color: black;">
+    <a asp-controller="Home" asp-action="Index" style="text-decoration: none; color: black;">
         <img src="~/icons/back.png" alt="Back to List" width="20" height="20" /><span class="mt-2">Back To List</span>
     </a>
 </div>
@@ -14,7 +14,7 @@
 <div class="paragraphs">
     <div class="row">
         <div class="span4">
-            <div class="mr-3 float-left"><h1>@Html.DisplayFor(model => model.GroupName)</h1></div>
+            <div class="mr-3 float-left"><h1>@Html.DisplayFor(model => model.Name)</h1></div>
             <a asp-action="Edit" asp-route-id="@Model.Id" class="content-heading text-muted" style="text-decoration: none;">
                 <img src="~/icons/edit.png" alt="Edit" width="20" height="20" />
             </a>

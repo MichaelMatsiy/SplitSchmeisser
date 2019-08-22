@@ -87,21 +87,21 @@ namespace SplitSchmeisser.BLL.Implementation
 
         public User GetCurrUser()
         {
-            return  this.userRepository.GetAll().First(x => x.UserName == CurrentUserService.UserName);
+            return  this.userRepository.GetAll().First(x => x.Name == CurrentUserService.UserName);
         }
 
         public async Task CreateUserAsync(string name, string password)
         {
             await this.userRepository.Insert(new User()
             {
-                UserName = name,
-                UserPassword = password
+                Name = name,
+                Password = password
             });
         }
 
         public bool ValidateUser(string userName, string password) {
             return this.userRepository.GetAll()
-                .FirstOrDefault(x => x.UserName == userName && x.UserPassword == password) 
+                .FirstOrDefault(x => x.Name == userName && x.Password == password) 
                 != null;
         }
     }
