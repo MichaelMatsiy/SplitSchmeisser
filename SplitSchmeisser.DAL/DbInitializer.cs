@@ -39,8 +39,13 @@ namespace SplitSchmeisser.DAL
                 new Group{Name="Nino"}
             };
 
+            var operations = new Operation[] {
+                new Operation { Group = groups[0], Owner= users[0], Amount = 100, OwnerId = 1, DateOfLoan = DateTime.Today}
+            };
+
             context.Groups.AddRange(groups);
             context.Users.AddRange(users);
+            context.Operations.AddRange(operations);
 
             context.SaveChanges();
         }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SplitSchmeisser.BLL.Interfaces;
+using SplitSchmeisser.BLL.Models;
 using SplitSchmeisser.Web.Models;
 
 namespace SplitSchmeisser.Web.Controllers
@@ -15,11 +16,15 @@ namespace SplitSchmeisser.Web.Controllers
     {
         IGroupService groupService;
         IUserService userService;
+        IOperationService operationService;
 
-        public GroupController(IGroupService groupService, IUserService userService)
+        public GroupController(IGroupService groupService, 
+            IUserService userService,
+            IOperationService operationService)
         {
             this.groupService = groupService;
             this.userService = userService;
+            this.operationService = operationService;
         }
 
         public IActionResult Index()
@@ -35,8 +40,31 @@ namespace SplitSchmeisser.Web.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var group = await groupService.GetGroupById(id);
-            return View("Details", GroupViewModel.FromDTO(group));
+            var op = this.groupService.GetAllOperationsByGroup(id).Result
+                .Select(x => OperationViewModel.FromDTO(x));
+
+            //var operations = this.operationService.GetAllOperationsByGroup(id);
+
+
+            return View("DetailsWithOperations", op);
+
+
+            //new OperationViewModel
+            //{
+            //    Id = x.Id,
+            //    Amount = x.Amount,
+            //    DateOfLoan = x.DateOfLoan,
+            //    Description = x.Description,
+            //    GroupId = x.Group.Id,
+            //    GroupName = x.Group.Name,
+            //    OwnerName = x.Owner.Name,
+            //    Group = GroupViewModel.FromDTO(x.Group)
+            //});
+
+            //var group = await groupService.GetGroupById(id);
+
+
+            //return View("Details", GroupViewModel.FromDTO(group));
         }
 
         public IActionResult Create()
@@ -82,7 +110,7 @@ namespace SplitSchmeisser.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                groupService.UpdateGroup(new BLL.Models.GroupDTO { Id = group.Id, Name = group.Name });
+                groupService.UpdateGroup(new GroupDTO { Id = group.Id, Name = group.Name });
                 return RedirectToAction(nameof(Index));
             }
             return View(group);

@@ -23,40 +23,15 @@ namespace SplitSchmeisser.DAL.Context
         public DbSet<User> Users { get; set; }
         public DbSet<Group> Groups { get; set; }
 
-        public SchmeisserContext(string nameOrConnectionString) : base(nameOrConnectionString)
-        {
-        }
+        public SchmeisserContext(string nameOrConnectionString) : base(nameOrConnectionString) { }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    //optionsBuilder.UseLazyLoadingProxies();
-        //}
-
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<UserGroup>()
-        //        .HasKey(x => new { x.UserId, x.GroupId });
-
-        //    modelBuilder.Entity<UserGroup>()
-        //        .HasOne(x => x.User)
-        //        .WithMany(x => x.UserGroups)
-        //        .HasForeignKey(x => x.UserId);
-
-        //    modelBuilder.Entity<UserGroup>()
-        //        .HasOne(x => x.Group)
-        //        .WithMany(x => x.UserGroups)
-        //        .HasForeignKey(x => x.GroupId);
-
-        //    base.OnModelCreating(modelBuilder);
-        //}
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //Configure default schema
-            //modelBuilder.HasDefaultSchema("Admin");
-
             modelBuilder.Entity<User>().HasKey(x => x.Id);
-
-            //modelBuilder.Entity<UseGrur>
+            modelBuilder.Entity<Operation>()
+                .HasRequired<User>(x => x.Owner)
+                .WithMany(u => u.Operations)
+                .HasForeignKey<int>(x => x.OwnerId);
         }
     }
 }

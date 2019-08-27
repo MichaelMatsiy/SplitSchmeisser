@@ -11,47 +11,36 @@
         <img src="~/icons/edit.png" alt="Edit" width="20" height="20" title="Create a new group" /> Add expense
     </a>
 
-    <div class="m-5">
+    <div class="container m-5">
+        <div class="row">
+            <div class="col-sm-9 m-2">
+                <h4>My Groups:</h4>
+                <table class="table mt-1 ml-5">
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td style="text-align: left;">
+                                    <a asp-controller="Group" asp-action="Details" asp-route-id="@item.Id" style="text-decoration: none;">
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </a>
 
-        <table class="table float-left d-inline-block m-3 list-group w-25" title="I lent">
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            <a asp-controller="Group" asp-action="Details" asp-route-id="@item.Id" style="text-decoration: none;">
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </a>
+                                </td>
+                                <td style="text-align: right;">
+                                    <a asp-controller="Group" asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none;">
+                                        <img src="~/icons/edit.png" alt="Edit" width="20" height="20" />
+                                    </a>
+                                    <a asp-controller="Group" asp-action="Delete" asp-route-id="@item.Id" style="text-decoration: none;">
+                                        <img src="~/icons/garbage.png" alt="Remove" width="20" height="20" />
+                                    </a>
+                                </td>
+                            </tr>
 
-                        </td>
-                        <td style="text-align: right;">
-                            <a asp-controller="Group" asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none;">
-                                <img src="~/icons/edit.png" alt="Edit" width="20" height="20" />
-                            </a>
-                            <a asp-controller="Group" asp-action="Delete" asp-route-id="@item.Id" style="text-decoration: none;">
-                                <img src="~/icons/garbage.png" alt="Remove" width="20" height="20" />
-                            </a>
-                        </td>
-                    </tr>
+                        }
 
-                }
-            </tbody>
-        </table>
-
-        <span>
-
-            <ul class="float-right d-inline-block m-3 list-group w-25">
-                <h4>I owe</h4>
-                @foreach (var item in Model)
-                {
-                    <li class="list-group-item">
-                        <a asp-action="Details" asp-route-id="@item.Id" style="text-decoration: none;">
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </a>
-                    </li>
-                }
-            </ul>
-        </span>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-
 </div>

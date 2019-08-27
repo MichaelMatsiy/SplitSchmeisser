@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using SplitSchmeisser.BLL.Interfaces;
 using SplitSchmeisser.BLL.Models;
 using SplitSchmeisser.DAL.Entities;
@@ -22,23 +23,14 @@ namespace SplitSchmeisser.BLL.Implementation
             this.userService = userService;
         }
 
-        public IList<OperationDTO> GetAll()
+        public IList<OperationDTO> GetOperations()
         {
-
-            //TODO: UserDTO and GroupDTO
             return this.operationRepository.GetAll()
-               .Select(x => new OperationDTO
-               {
-                   Id = x.Id,
-                   Amount = x.Amount,
-                   DateOfLoan = x.DateOfLoan,
-                   Description = x.Description,
-                   Owner = new UserDTO(),
-                   Group = new GroupDTO()
-
-               })
+               .ToList()
+               .Select(x => OperationDTO.FromEntity(x))
                .ToList();
         }
+
 
         public IDictionary<string, double> GetUsersDebtByGroup(GroupDTO groupDto)
         {
@@ -48,7 +40,7 @@ namespace SplitSchmeisser.BLL.Implementation
             {
                 var debt = this.userService.GetUserDebsByGroup(item.Id, groupDto.Id);
 
-                userDebts.Add(item.Name, Math.Max(0, debt));
+                if(debt > 0) userDebts.Add(item.Name, debt);
             }
 
             return userDebts;

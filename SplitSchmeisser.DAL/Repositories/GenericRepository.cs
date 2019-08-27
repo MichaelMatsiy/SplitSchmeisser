@@ -2,6 +2,7 @@
 using SplitSchmeisser.DAL.Entities.Base;
 using SplitSchmeisser.DAL.Infrasructure;
 using SplitSchmeisser.DAL.Interfaces;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,7 +17,7 @@ namespace SplitSchmeisser.DAL.Repositories
             this.context = context;
         }
 
-        public IQueryable<TEntity> GetAll()
+        public IEnumerable<TEntity> GetAll()
         {
             return context.Set<TEntity>();
         }

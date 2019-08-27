@@ -1,5 +1,6 @@
 ﻿using SplitSchmeisser.BLL.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SplitSchmeisser.BLL.Interfaces
 {
@@ -7,7 +8,7 @@ namespace SplitSchmeisser.BLL.Interfaces
     {
         void MakeOperation(int ownerId, int groupId, double amount, string Description = "");
 
-        IList<OperationDTO> GetAll();
+        IList<OperationDTO> GetOperations();
 
         IList<OperationDTO> GetAllUsersOperations(int userId);
 

@@ -13,6 +13,7 @@ namespace SplitSchmeisser.BLL.Implementation
     {
         private IGenericRepository<Group> groupRepository;
         private IGenericRepository<User> userRepository;
+        private IGenericRepository<Operation> operationRepository;
 
         private IUserService userService;
         private IOperationService operationService;
@@ -20,11 +21,13 @@ namespace SplitSchmeisser.BLL.Implementation
         public GroupService(
             IGenericRepository<Group> groupRepository,
             IGenericRepository<User> userRepository,
+            IGenericRepository<Operation> operationRepository,
             IUserService userService,
             IOperationService operationService)
         {
             this.groupRepository = groupRepository;
             this.userRepository = userRepository;
+            this.operationRepository = operationRepository;
             this.userService = userService;
             this.operationService = operationService;
         }
@@ -32,7 +35,7 @@ namespace SplitSchmeisser.BLL.Implementation
         public async Task AddUserToGroup(int groupId, int userId)
         {
             var group = groupRepository.GetById(groupId).Result;
-            var user =  await this.userRepository.GetById(userId);
+            var user = await this.userRepository.GetById(userId);
 
             group.Users.Add(user);
 
@@ -44,17 +47,22 @@ namespace SplitSchmeisser.BLL.Implementation
             var users = this.userRepository.GetAll().Where(x => userIds.Contains(x.Id)).ToList();
             var currUser = this.userService.GetCurrUser();
 
+            var group = new Group
+            {
+                Name = name,
+                Users = users
+            };
+
             var operation = new Operation
             {
                 Amount = amount,
                 DateOfLoan = DateTime.Now,
-                OwnerId = currUser.Id
+                OwnerId = currUser.Id,
+                Group = group,
+                Owner = currUser,
+                Description = "description"
             };
 
-            var group = new Group {
-                Name = name,
-                Users = users
-            };
 
             group.Operations.Add(operation);
             group.Users.Add(currUser);
@@ -69,12 +77,10 @@ namespace SplitSchmeisser.BLL.Implementation
 
         public IList<GroupDTO> GetGroups()
         {
-            var result = this.groupRepository.GetAll()
+            return this.groupRepository.GetAll()
                 .ToList()
                 .Select(x => GroupDTO.FromEntity(x))
                 .ToList();
-
-            return result;
         }
 
         public async Task<GroupDTO> GetGroupById(int id)
@@ -87,8 +93,28 @@ namespace SplitSchmeisser.BLL.Implementation
             return groupDto;
         }
 
-        public async Task Delete(int id) {
+        public async Task Delete(int id)
+        {
             await this.groupRepository.Delete(id);
         }
+
+        public async Task<IList<OperationDTO>> GetAllOperationsByGroup(int groupId)
+        {
+
+            var ops = this.operationRepository.GetAll()
+               .ToList()
+               .Select(x => OperationDTO.FromEntity(x))
+               .ToList()
+               .Where(x => x.Group.Id == groupId)
+               .ToList();
+
+            foreach (var op in ops)
+            {
+                op.Group = await this.GetGroupById(groupId);
+            }
+
+            return ops;
+        }
+
     }
 }

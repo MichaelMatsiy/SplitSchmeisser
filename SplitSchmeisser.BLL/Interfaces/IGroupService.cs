@@ -17,5 +17,7 @@ namespace SplitSchmeisser.BLL.Interfaces
         Task<GroupDTO> GetGroupById(int id);
 
         Task Delete(int id);
+
+        Task<IList<OperationDTO>> GetAllOperationsByGroup(int groupId);
     }
 }
