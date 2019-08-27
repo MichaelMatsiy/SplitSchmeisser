@@ -40,13 +40,31 @@
                 <div class="row">
                     <div class="col-sm-9 m-2">
 
-                        <h4>List of the Operations:</h4>
+                        @*<h4>List of the Operations:</h4>
                         <form class="d-inline float-right">
                             <a asp-action="Create" asp-controller="Group" class="content-heading text-muted text-decoration-none">
                                 <img src="~/icons/pay.png" alt="Pay" width="20" height="20" title="Add payment" /> Add payment
                             </a>
-                        </form>
+                        </form>*@
                         <table class="table mt-1">
+                            <thead>
+                                <tr>
+                                    <td>
+                                        <h4>List of the Operations</h4>
+                                    </td>
+
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-left">
+                                        <a asp-action="Create" asp-controller="Group" class="content-heading text-muted text-decoration-none">
+                                            <img src="~/icons/pay.png" alt="Pay" width="20" height="20" title="Add payment" /> Add payment
+                                        </a>
+
+                                    </td>
+                                    <td></td>
+                                </tr>
+
+                            </thead>
                             <thead>
                                 <tr>
                                     <th>Owner</th>
@@ -88,8 +106,15 @@
                     </div>
 
                     <div class="col-sm-2 m-2">
-                        <h4 class="ml-4">Users:</h4>
                         <table class="table mt-1 ml-5">
+                            <thead>
+                                <tr>
+                                    <td>
+                                        <h4>Users</h4>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </thead>
                             <thead>
                                 <tr>
                                     <th>Name</th>

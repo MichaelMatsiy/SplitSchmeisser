@@ -7,15 +7,24 @@
     <h1 class="display-4">Welcome, @User.Identity.Name</h1>
     <p>bla bla bbla some info</p>
 
-    <a asp-action="Create" asp-controller="Group" style="text-decoration: none;">
-        <img src="~/icons/edit.png" alt="Edit" width="20" height="20" title="Create a new group" /> Add expense
-    </a>
+    @*<a asp-action="Create" asp-controller="Group" style="text-decoration: none;">
+            <img src="~/icons/edit.png" alt="Edit" width="20" height="20" title="Create a new group" /> Add expense
+        </a>*@
 
     <div class="container m-5">
         <div class="row">
-            <div class="col-sm-9 m-2">
-                <h4>My Groups:</h4>
-                <table class="table mt-1 ml-5">
+                <table class="table mt-1">
+                    <thead>
+                        <tr>
+                            <td class="text-center"><h4>My Groups</h4></td>
+
+                            <td class="text-righ">
+                                <a asp-action="Create" asp-controller="Group" style="text-decoration: none;">
+                                    <img src="~/icons/edit.png" alt="Edit" width="20" height="20" title="Create a new group" /> Create New
+                                </a>
+
+                            </td>
+                    </thead>
                     <tbody>
                         @foreach (var item in Model)
                         {
