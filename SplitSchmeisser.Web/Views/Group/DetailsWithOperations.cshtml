@@ -40,12 +40,6 @@
                 <div class="row">
                     <div class="col-sm-9 m-2">
 
-                        @*<h4>List of the Operations:</h4>
-                        <form class="d-inline float-right">
-                            <a asp-action="Create" asp-controller="Group" class="content-heading text-muted text-decoration-none">
-                                <img src="~/icons/pay.png" alt="Pay" width="20" height="20" title="Add payment" /> Add payment
-                            </a>
-                        </form>*@
                         <table class="table mt-1">
                             <thead>
                                 <tr>
@@ -56,7 +50,7 @@
                                     <td></td>
                                     <td></td>
                                     <td class="text-left">
-                                        <a asp-action="Create" asp-controller="Group" class="content-heading text-muted text-decoration-none">
+                                        <a asp-action="Create" asp-controller="Operation" asp-route-id="@Model.First().GroupId" class="content-heading text-muted text-decoration-none">
                                             <img src="~/icons/pay.png" alt="Pay" width="20" height="20" title="Add payment" /> Add payment
                                         </a>
 
@@ -92,10 +86,10 @@
                                             @Html.DisplayFor(modelItem => item.Description)
                                         </td>
                                         <td style="text-align: right;">
-                                            <a asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none;">
+                                            <a asp-controller="Operation" asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none;">
                                                 <img src="~/icons/edit.png" alt="Edit" width="20" height="20" />
                                             </a>
-                                            <a asp-action="Delete" asp-route-id="@item.Id" style="text-decoration: none;">
+                                            <a asp-controller="Operation" asp-action="Delete" asp-route-id="@item.Id" style="text-decoration: none;">
                                                 <img src="~/icons/garbage.png" alt="Remove" width="20" height="20" />
                                             </a>
                                         </td>

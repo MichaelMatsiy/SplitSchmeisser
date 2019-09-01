@@ -11,7 +11,6 @@ using SplitSchmeisser.DAL.Interfaces;
 using SplitSchmeisser.DAL.Repositories;
 using Microsoft.AspNetCore.Builder;
 
-
 namespace SplitSchmeisser.Web
 {
     public class Startup
@@ -35,8 +34,8 @@ namespace SplitSchmeisser.Web
 
             services.AddScoped(provider =>
             {
-                var connectionString = Configuration.GetConnectionString("DefaultConnection");
-                return new SchmeisserContext(connectionString);
+                return new SchmeisserContext(Configuration
+                    .GetConnectionString("DefaultConnection"));
             });
 
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));

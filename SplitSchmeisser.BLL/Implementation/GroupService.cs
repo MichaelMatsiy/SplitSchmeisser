@@ -44,7 +44,10 @@ namespace SplitSchmeisser.BLL.Implementation
 
         public async Task CreateGroup(string name, IList<int> userIds, double amount)
         {
-            var users = this.userRepository.GetAll().Where(x => userIds.Contains(x.Id)).ToList();
+            var users = this.userRepository.GetAll()
+                .Where(x => userIds.Contains(x.Id))
+                .ToList();
+
             var currUser = this.userService.GetCurrUser();
 
             var group = new Group
@@ -70,9 +73,12 @@ namespace SplitSchmeisser.BLL.Implementation
             await this.groupRepository.Insert(group);
         }
 
-        public void UpdateGroup(GroupDTO group)
+        public async Task UpdateGroup(GroupDTO group)
         {
-            this.groupRepository.UpdateAsync(new Group { Id = group.Id, Name = group.Name });
+            await this.groupRepository.UpdateAsync(new Group {
+                Id = group.Id,
+                Name = group.Name
+            });
         }
 
         public IList<GroupDTO> GetGroups()

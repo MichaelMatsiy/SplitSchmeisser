@@ -45,6 +45,7 @@ namespace SplitSchmeisser.Web.Controllers
                 var principal = new ClaimsPrincipal(identity);
 
                 var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
                 CurrentUserService.UserName = userName;
 
                 return RedirectToAction("Index", "Home");

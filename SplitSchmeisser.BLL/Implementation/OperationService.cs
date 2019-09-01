@@ -31,7 +31,6 @@ namespace SplitSchmeisser.BLL.Implementation
                .ToList();
         }
 
-
         public IDictionary<string, double> GetUsersDebtByGroup(GroupDTO groupDto)
         {
             IDictionary<string, double> userDebts = new Dictionary<string, double>();
@@ -51,9 +50,23 @@ namespace SplitSchmeisser.BLL.Implementation
             throw new System.NotImplementedException();
         }
 
-        public void MakeOperation(int ownerId, int groupId, double amount, string Description = "")
+        public async Task CreateOperation(int ownerId, int groupId, double amount, string Description = "")
         {
-            throw new System.NotImplementedException();
+            var operation = new Operation
+            {
+                Amount = amount,
+                OwnerId = ownerId,
+                GroupId = groupId,
+                Description = Description,
+                DateOfLoan = DateTime.Now
+            };
+
+            await this.operationRepository.Insert(operation);
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            await this.operationRepository.Delete(id);
         }
     }
 }
