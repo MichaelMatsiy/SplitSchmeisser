@@ -10,6 +10,7 @@ using SplitSchmeisser.DAL.Context;
 using SplitSchmeisser.DAL.Interfaces;
 using SplitSchmeisser.DAL.Repositories;
 using Microsoft.AspNetCore.Builder;
+using SplitSchmeisser.BLL.ReportWorker;
 
 namespace SplitSchmeisser.Web
 {
@@ -42,6 +43,8 @@ namespace SplitSchmeisser.Web
             services.AddTransient<IGroupService, GroupService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IOperationService, OperationService>();
+            services.AddTransient<IReportService, ReportService>();
+            services.AddSingleton<IReportGenerateResolver, ReportGenerateResolver>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 

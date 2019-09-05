@@ -37,3 +37,65 @@
     </dl>
 </div>
 
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 m-2">
+
+            <table class="table mt-1">
+                <thead>
+                    <tr>
+                        <td>
+                            <h4>List of the Operations</h4>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                </thead>
+                <thead>
+                    <tr>
+                        <th>Owner</th>
+                        <th>Amount</th>
+                        <th>Date of Loan</th>
+                        <th>Description</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in ViewData["operations"] as IList<OperationViewModel>)
+                    {
+                        <tr>
+                            <td scope="row">
+                                @Html.DisplayFor(modelItem => item.OwnerName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Amount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateOfLoan)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td style="text-align: right;">
+                                <a asp-controller="Operation" asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none;">
+                                    <img src="~/icons/edit.png" alt="Edit" width="20" height="20" />
+                                </a>
+                                <a asp-controller="Operation" asp-action="Delete" asp-route-id="@item.Id" style="text-decoration: none;">
+                                    <img src="~/icons/garbage.png" alt="Remove" width="20" height="20" />
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        
+    </div>
+</div>
+

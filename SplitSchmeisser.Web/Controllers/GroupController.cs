@@ -34,6 +34,19 @@ namespace SplitSchmeisser.Web.Controllers
             return View("DetailsWithOperations", op);
         }
 
+
+        //public async Task<IActionResult> Details(int id)
+        //{
+        //    var op = this.groupService.GetAllOperationsByGroup(id).Result
+        //        .Select(x => OperationViewModel.FromDTO(x)).ToList<OperationViewModel>();
+
+        //    var group = this.groupService.GetGroupById(id);
+
+        //    ViewData["operations"] = op;
+
+        //    return View("Details", group);
+        //}
+
         public IActionResult Create()
         {
             var users = this.userService.GetUsers();
@@ -51,7 +64,12 @@ namespace SplitSchmeisser.Web.Controllers
         public async Task<IActionResult> Create(CreateGroupModel group)
         {
             await this.groupService.CreateGroup(group.Name, group.UserIds, group.Amount);
-            return RedirectToAction("Index");
+
+            return RedirectToRoute("Default", new
+            {
+                controller = "",
+                action = ""
+            });
         }
 
         public async Task<IActionResult> Edit(int id)
@@ -67,8 +85,7 @@ namespace SplitSchmeisser.Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,GroupName")] GroupViewModel group)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,GroupName")] GroupViewModel group)
         {
             if (id != group.Id)
             {
@@ -77,15 +94,15 @@ namespace SplitSchmeisser.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                groupService.UpdateGroup(new GroupDTO { Id = group.Id, Name = group.Name });
+                await groupService.UpdateGroup(new GroupDTO { Id = group.Id, Name = group.Name });
                 return RedirectToAction("Details",
-                new RouteValueDictionary(
-                    new
-                    {
-                        controller = "Group",
-                        action = "Details",
-                        Id = id
-                    }));
+                    new RouteValueDictionary(
+                        new
+                        {
+                            controller = "Group",
+                            action = "Details",
+                            Id = id
+                        }));
             }
             return View(group);
         }

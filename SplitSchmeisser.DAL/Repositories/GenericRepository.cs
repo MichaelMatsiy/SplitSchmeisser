@@ -4,6 +4,7 @@ using SplitSchmeisser.DAL.Infrasructure;
 using SplitSchmeisser.DAL.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SplitSchmeisser.DAL.Repositories
@@ -17,8 +18,12 @@ namespace SplitSchmeisser.DAL.Repositories
             this.context = context;
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public IQueryable<TEntity> GetAll(bool delay = false)
         {
+            if (delay)
+            {
+                Thread.Sleep(10000);
+            }
             return context.Set<TEntity>();
         }
 
@@ -37,6 +42,8 @@ namespace SplitSchmeisser.DAL.Repositories
 
         public async Task Insert(TEntity entity)
         {
+
+            Thread.Sleep(10000);
             context.Set<TEntity>().Add(entity);
             await context.SaveChangesAsync();
         }

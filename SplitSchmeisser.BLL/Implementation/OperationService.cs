@@ -64,6 +64,15 @@ namespace SplitSchmeisser.BLL.Implementation
             await this.operationRepository.Insert(operation);
         }
 
+        public async Task UpdateOperation(int id) {
+
+            var a = await this.operationRepository.GetById(id);
+
+            a.DateOfLoan = a.DateOfLoan.AddDays(1);
+
+            await this.operationRepository.UpdateAsync(a);
+        }
+
         public async Task DeleteAsync(int id)
         {
             await this.operationRepository.Delete(id);

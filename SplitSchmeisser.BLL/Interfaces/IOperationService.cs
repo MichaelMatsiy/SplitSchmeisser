@@ -15,5 +15,7 @@ namespace SplitSchmeisser.BLL.Interfaces
         IDictionary<string, double> GetUsersDebtByGroup(GroupDTO groupDto);
 
         Task DeleteAsync(int id);
+
+        Task UpdateOperation(int id);
     }
 }

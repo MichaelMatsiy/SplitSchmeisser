@@ -31,4 +31,9 @@
     <ProjectReference Include="..\SplitSchmeisser.DAL\SplitSchmeisser.DAL.csproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Folder Include="Views\Report\" />
+  </ItemGroup>
+
 </Project>
