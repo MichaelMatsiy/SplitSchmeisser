@@ -7,7 +7,7 @@ namespace SplitSchmeisser.BLL.Models
     {
         public int Id { get; set; }
         public UserDTO Owner { get; set; }
-        public GroupDTO Group { get; set; }
+        public int GroupId { get; set; }
         public DateTime DateOfLoan { get; set; }
         public double Amount { get; set; }
         public string Description { get; set; }
@@ -18,7 +18,7 @@ namespace SplitSchmeisser.BLL.Models
             {
                 Id = operation.Id,
                 Owner = UserDTO.FromEntity(operation.Owner),
-                Group = GroupDTO.FromEntity(operation.Group),
+                GroupId = operation.GroupId,
                 DateOfLoan = operation.DateOfLoan,
                 Amount = operation.Amount,
                 Description = operation.Description

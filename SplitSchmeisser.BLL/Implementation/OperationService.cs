@@ -25,8 +25,7 @@ namespace SplitSchmeisser.BLL.Implementation
 
         public IList<OperationDTO> GetOperations()
         {
-            return this.operationRepository.GetAll()
-               .ToList()
+            return this.operationRepository.GetAll().ToList()
                .Select(x => OperationDTO.FromEntity(x))
                .ToList();
         }
@@ -76,6 +75,18 @@ namespace SplitSchmeisser.BLL.Implementation
         public async Task DeleteAsync(int id)
         {
             await this.operationRepository.Delete(id);
+        }
+
+        public IList<OperationDTO> GetAllOperationsByGroup(int groupId)
+        {
+            var ops = operationRepository.GetAll()
+               .ToList()
+               .Select(x => OperationDTO.FromEntity(x))
+               .ToList()
+               .Where(x => x.GroupId == groupId)
+               .ToList();
+
+            return ops;
         }
     }
 }

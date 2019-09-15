@@ -50,6 +50,8 @@ namespace SplitSchmeisser.BLL.Implementation
 
             var currUser = this.userService.GetCurrUser();
 
+            users.Add(currUser);
+
             var group = new Group
             {
                 Name = name,
@@ -66,9 +68,7 @@ namespace SplitSchmeisser.BLL.Implementation
                 Description = "description"
             };
 
-
             group.Operations.Add(operation);
-            group.Users.Add(currUser);
 
             await this.groupRepository.Insert(group);
         }
@@ -94,32 +94,12 @@ namespace SplitSchmeisser.BLL.Implementation
             var group = await this.groupRepository.GetById(id);
             var groupDto = GroupDTO.FromEntity(group);
 
-            groupDto.UserDebts = this.operationService.GetUsersDebtByGroup(groupDto);
-
             return groupDto;
         }
 
         public async Task Delete(int id)
         {
             await this.groupRepository.Delete(id);
-        }
-
-        public async Task<IList<OperationDTO>> GetAllOperationsByGroup(int groupId)
-        {
-
-            var ops = this.operationRepository.GetAll()
-               .ToList()
-               .Select(x => OperationDTO.FromEntity(x))
-               .ToList()
-               .Where(x => x.Group.Id == groupId)
-               .ToList();
-
-            foreach (var op in ops)
-            {
-                op.Group = await this.GetGroupById(groupId);
-            }
-
-            return ops;
         }
 
     }

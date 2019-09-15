@@ -61,14 +61,14 @@ namespace SplitSchmeisser.Web.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var groupId = this.operationService.GetOperations()
-                .Where(x => x.Id == id)
-                .First().Group.Id;
+                .First(x => x.Id == id)
+                .GroupId;
 
             await this.operationService.DeleteAsync(id);
 
-            var opCount = groupService
+            var opCount = this.operationService
                 .GetAllOperationsByGroup(groupId)
-                .Result.Count;
+                .Count;
 
             if (opCount > 0)
             {

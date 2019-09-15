@@ -28,24 +28,13 @@ namespace SplitSchmeisser.Web.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var op = this.groupService.GetAllOperationsByGroup(id).Result
-                .Select(x => OperationViewModel.FromDTO(x));
+            var groupDto = await this.groupService.GetGroupById(id);
+            groupDto.UserDebts = this.operationService.GetUsersDebtByGroup(groupDto);
+            
+            var group = GroupViewModel.FromDTO(groupDto);
 
-            return View("DetailsWithOperations", op);
+            return View("Details", group);
         }
-
-
-        //public async Task<IActionResult> Details(int id)
-        //{
-        //    var op = this.groupService.GetAllOperationsByGroup(id).Result
-        //        .Select(x => OperationViewModel.FromDTO(x)).ToList<OperationViewModel>();
-
-        //    var group = this.groupService.GetGroupById(id);
-
-        //    ViewData["operations"] = op;
-
-        //    return View("Details", group);
-        //}
 
         public IActionResult Create()
         {
@@ -74,18 +63,13 @@ namespace SplitSchmeisser.Web.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            var gr = await groupService.GetGroupById(id);
+            var group = await groupService.GetGroupById(id);
 
-            var model = new GroupViewModel
-            {
-                Name = gr.Name
-            };
-
-            return View("Edit", model);
+            return View("Edit", GroupEditModel.FromDTO(group));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,GroupName")] GroupViewModel group)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] GroupEditModel group)
         {
             if (id != group.Id)
             {
@@ -95,6 +79,7 @@ namespace SplitSchmeisser.Web.Controllers
             if (ModelState.IsValid)
             {
                 await groupService.UpdateGroup(new GroupDTO { Id = group.Id, Name = group.Name });
+
                 return RedirectToAction("Details",
                     new RouteValueDictionary(
                         new
