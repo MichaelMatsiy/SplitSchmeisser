@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SplitSchmeisser.Web.Models
 {
-    public class CreateUserModel
+    public class UserCreateModel
     {
         [Required(ErrorMessage = "Name is empty")]
         public string Name { get; set; }

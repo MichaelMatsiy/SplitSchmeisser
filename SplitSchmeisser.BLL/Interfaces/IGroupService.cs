@@ -12,7 +12,7 @@ namespace SplitSchmeisser.BLL.Interfaces
 
         IList<GroupDTO> GetGroups();
 
-        Task UpdateGroup(GroupDTO group);
+        Task UpdateGroup(GroupDTO dto);
 
         Task<GroupDTO> GetGroupById(int id);
 

@@ -66,7 +66,7 @@ namespace SplitSchmeisser.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Registration(CreateUserModel user)
+        public async Task<IActionResult> Registration(UserCreateModel user)
         {
             await this.userService.CreateUserAsync(user.Name, user.Password);
 

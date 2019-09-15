@@ -16,8 +16,11 @@ namespace SplitSchmeisser.BLL.Interfaces
 
         Task DeleteAsync(int id);
 
-        Task UpdateOperation(int id);
+        Task UpdateOperation(OperationDTO dto);
 
         IList<OperationDTO> GetAllOperationsByGroup(int groupId);
+
+        Task<OperationDTO> GetOperationById(int id);
+
     }
 }

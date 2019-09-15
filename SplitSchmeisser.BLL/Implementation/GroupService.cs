@@ -73,12 +73,12 @@ namespace SplitSchmeisser.BLL.Implementation
             await this.groupRepository.Insert(group);
         }
 
-        public async Task UpdateGroup(GroupDTO group)
+        public async Task UpdateGroup(GroupDTO dto)
         {
-            await this.groupRepository.UpdateAsync(new Group {
-                Id = group.Id,
-                Name = group.Name
-            });
+            var group = await this.groupRepository.GetById(dto.Id);
+            group.Name = dto.Name;
+
+            await this.groupRepository.UpdateAsync(group);
         }
 
         public IList<GroupDTO> GetGroups()
@@ -92,9 +92,8 @@ namespace SplitSchmeisser.BLL.Implementation
         public async Task<GroupDTO> GetGroupById(int id)
         {
             var group = await this.groupRepository.GetById(id);
-            var groupDto = GroupDTO.FromEntity(group);
 
-            return groupDto;
+            return GroupDTO.FromEntity(group);
         }
 
         public async Task Delete(int id)

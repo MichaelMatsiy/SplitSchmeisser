@@ -39,7 +39,8 @@ namespace SplitSchmeisser.Web.Controllers
         public IActionResult Create()
         {
             var users = this.userService.GetUsers();
-            var model = new CreateGroupModel {
+            var model = new GroupCreateModel
+            {
                 Users = users.Select(x=> new SelectListItem {
                     Text = x.Name,
                     Value = x.Id.ToString()
@@ -50,7 +51,7 @@ namespace SplitSchmeisser.Web.Controllers
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> Create(CreateGroupModel group)
+        public async Task<IActionResult> Create(GroupCreateModel group)
         {
             await this.groupService.CreateGroup(group.Name, group.UserIds, group.Amount);
 

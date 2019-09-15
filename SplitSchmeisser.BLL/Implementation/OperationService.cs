@@ -34,12 +34,19 @@ namespace SplitSchmeisser.BLL.Implementation
         {
             IDictionary<string, double> userDebts = new Dictionary<string, double>();
 
-            foreach (var item in groupDto.Users)
+            Parallel.ForEach(groupDto.Users, item =>
             {
                 var debt = this.userService.GetUserDebsByGroup(item.Id, groupDto.Id);
 
-                if(debt > 0) userDebts.Add(item.Name, debt);
-            }
+                if (debt > 0) userDebts.Add(item.Name, debt);
+            });
+
+            //foreach (var item in groupDto.Users)
+            //{
+            //    var debt = this.userService.GetUserDebsByGroup(item.Id, groupDto.Id);
+
+            //    if(debt > 0) userDebts.Add(item.Name, debt);
+            //}
 
             return userDebts;
         }
@@ -51,25 +58,30 @@ namespace SplitSchmeisser.BLL.Implementation
 
         public async Task CreateOperation(int ownerId, int groupId, double amount, string Description = "")
         {
-            var operation = new Operation
+            await this.operationRepository.Insert(new Operation
             {
                 Amount = amount,
                 OwnerId = ownerId,
                 GroupId = groupId,
                 Description = Description,
                 DateOfLoan = DateTime.Now
-            };
-
-            await this.operationRepository.Insert(operation);
+            });
         }
 
-        public async Task UpdateOperation(int id) {
+        public async Task UpdateOperation(OperationDTO dto)
+        {
+            var operation = await this.operationRepository.GetById(dto.Id);
+            operation.Description = dto.Description;
+            operation.Amount = dto.Amount;
 
-            var a = await this.operationRepository.GetById(id);
+            await this.operationRepository.UpdateAsync(operation);
+        }
 
-            a.DateOfLoan = a.DateOfLoan.AddDays(1);
+        public async Task<OperationDTO> GetOperationById(int id)
+        {
+            var operation = await this.operationRepository.GetById(id);
 
-            await this.operationRepository.UpdateAsync(a);
+            return OperationDTO.FromEntity(operation);
         }
 
         public async Task DeleteAsync(int id)

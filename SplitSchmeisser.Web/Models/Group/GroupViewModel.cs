@@ -8,9 +8,7 @@ namespace SplitSchmeisser.Web.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-
         public IList<OperationViewModel> Operations { get; set; }
-
         public IDictionary<string, double> Debts { get; set; }
 
         public static GroupViewModel FromDTO(GroupDTO dto)

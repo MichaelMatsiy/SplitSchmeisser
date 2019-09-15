@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using SplitSchmeisser.BLL;
 using SplitSchmeisser.BLL.Interfaces;
+using SplitSchmeisser.BLL.Models;
 using SplitSchmeisser.Web.Models;
 
 namespace SplitSchmeisser.Web.Controllers
@@ -29,7 +30,7 @@ namespace SplitSchmeisser.Web.Controllers
                 .ToList()
                 .First(x => x.Name == CurrentUserService.UserName);
 
-            var op = new CreateOperationModel
+            var op = new OperationCreateModel
             {
                 GroupID = id,
                 OwnerID = user.Id
@@ -39,7 +40,7 @@ namespace SplitSchmeisser.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateOperationModel op)
+        public async Task<IActionResult> Create(OperationCreateModel op)
         {
             await this.operationService.CreateOperation(
                 op.OwnerID,
@@ -56,6 +57,42 @@ namespace SplitSchmeisser.Web.Controllers
                         action = "Details",
                         Id = op.GroupID
                     }));
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var operationDto = await operationService.GetOperationById(id);
+
+            return View("Edit", OperationEditModel.FromDTO(operationDto));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Description,Amount,GroupId")] OperationEditModel operation)
+        {
+            if (id != operation.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                await operationService.UpdateOperation(new OperationDTO {
+                    Id = operation.Id,
+                    Description = operation.Description,
+                    Amount = operation.Amount
+                });
+
+                return RedirectToAction("Details",
+                    new RouteValueDictionary(
+                        new
+                        {
+                            controller = "Group",
+                            action = "Details",
+                            Id = operation.GroupId
+                        }));
+            }
+
+            return View(operation);
         }
 
         public async Task<IActionResult> Delete(int id)
