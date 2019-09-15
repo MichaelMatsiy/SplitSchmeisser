@@ -16,19 +16,19 @@ namespace SplitSchmeisser.Web.Controllers
     {
         IGroupService groupService;
         IReportService reportService;
+        IUserService userService;
         IOperationService operationService;
          
 
         public HomeController(IGroupService groupService, 
             IReportService reportService,
-            IOperationService operationService)
+            IOperationService operationService,
+            IUserService userService)
         {
-            //CurrentUserService currentUser = CurrentUserService.Instance;
-            //CurrentUserService.Name = User.Identity.Name;
-
             this.groupService = groupService;
             this.reportService = reportService;
             this.operationService = operationService;
+            this.userService = userService;
         }
 
         public async Task<IActionResult> Updator() {
@@ -43,31 +43,21 @@ namespace SplitSchmeisser.Web.Controllers
             var result = rep.Select(x => OperationDTO.FromEntity(x))
                 .Select(x=> OperationViewModel.FromDTO(x)).ToList();
 
-            //var ops = this.operationService.GetOperations().Where(x => x.Group.Id == 1).ToList();
-
-            //foreach (var item in ops)
-            //{
-            //    await this.operationService.UpdateOperation(item.Id);
-            //}
-
             return View("Report", result);
         }
 
-
-
         public IActionResult Index()
         {
-            
+            if (CurrentUserService.UserName == null)
+            {
+                CurrentUserService.UserName = User.Identity.Name;
+            }
+
+            var currentUserId = this.userService.GetCurrUser().Id;
 
             var gr = this.groupService.GetGroups()
-                .Select(x => new GroupViewModel
-                {
-                    Id = x.Id,
-                    Name = x.Name
-                })
-            .ToList();
-
-            
+                .Select(x => GroupListModel.FromDTO(x)).Where(x => x.UserIDs.Contains(currentUserId))
+                .ToList();
 
             return View(gr);
         }

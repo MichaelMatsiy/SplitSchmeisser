@@ -30,23 +30,23 @@ namespace SplitSchmeisser.BLL.Implementation
                .ToList();
         }
 
-        public IDictionary<string, double> GetUsersDebtByGroup(GroupDTO groupDto)
+        public async Task<IDictionary<string, double>> GetUsersDebtByGroup(GroupDTO groupDto)
         {
             IDictionary<string, double> userDebts = new Dictionary<string, double>();
 
-            Parallel.ForEach(groupDto.Users, item =>
+            //Parallel.ForEach(groupDto.Users, async item =>
+            //{
+            //    var debt = await this.userService.GetUserDebtsByGroup(item.Id, groupDto.Id);
+
+            //    if (debt > 0) userDebts.Add(item.Name, debt);
+            //});
+
+            foreach (var item in groupDto.Users)
             {
-                var debt = this.userService.GetUserDebsByGroup(item.Id, groupDto.Id);
+                var debt = await this.userService.GetUserDebtsByGroup(item.Id, groupDto.Id);
 
                 if (debt > 0) userDebts.Add(item.Name, debt);
-            });
-
-            //foreach (var item in groupDto.Users)
-            //{
-            //    var debt = this.userService.GetUserDebsByGroup(item.Id, groupDto.Id);
-
-            //    if(debt > 0) userDebts.Add(item.Name, debt);
-            //}
+            }
 
             return userDebts;
         }

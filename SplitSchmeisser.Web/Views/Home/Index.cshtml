@@ -1,4 +1,4 @@
-﻿@model IEnumerable<GroupViewModel>
+﻿@model IEnumerable<GroupListModel>
 @{
     ViewData["Title"] = "Home Page";
     ViewData["CurrentUserName"] = User.Identity.Name;
@@ -8,53 +8,48 @@
     <h1 class="display-4">Welcome, @User.Identity.Name</h1>
     <p>bla bla bbla some info</p>
 
-    @*<a asp-action="Create" asp-controller="Group" style="text-decoration: none;">
-            <img src="~/icons/edit.png" alt="Edit" width="20" height="20" title="Create a new group" /> Add expense
-        </a>*@
-
     <div class="container m-5">
         <div class="row">
-                <table class="table mt-1">
-                    <thead>
-                        <tr>
-                            <td class="text-center"><h4>My Groups</h4></td>
+            <table class="table mt-1">
+                <thead>
+                    <tr>
+                        <td class="text-center"><h4>My Groups</h4></td>
 
-                            <td class="text-righ">
-                                <a asp-action="Create" asp-controller="Group" style="text-decoration: none;">
-                                    <img src="~/icons/edit.png" alt="Edit" width="20" height="20" title="Create a new group" /> Create New
+                        <td class="text-righ">
+                            <a asp-action="Create" asp-controller="Group" style="text-decoration: none;">
+                                <img src="~/icons/edit.png" alt="Edit" width="20" height="20" title="Create a new group" /> Create New
+                            </a>
+
+                        </td>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td style="text-align: left;">
+                                <a asp-controller="Group" asp-action="Details" asp-route-id="@item.Id" style="text-decoration: none;">
+                                    @Html.DisplayFor(modelItem => item.Name)
                                 </a>
 
                             </td>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td style="text-align: left;">
-                                    <a asp-controller="Group" asp-action="Details" asp-route-id="@item.Id" style="text-decoration: none;">
-                                        @Html.DisplayFor(modelItem => item.Name)
-                                    </a>
+                            <td style="text-align: right;">
+                                <a asp-controller="Group" asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none;">
+                                    <img src="~/icons/edit.png" alt="Edit" width="20" height="20" />
+                                </a>
+                                <a asp-controller="Group" asp-action="Delete" asp-route-id="@item.Id" style="text-decoration: none;">
+                                    <img src="~/icons/garbage.png" alt="Remove" width="20" height="20" />
+                                </a>
 
-                                </td>
-                                <td style="text-align: right;">
-                                    <a asp-controller="Group" asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none;">
-                                        <img src="~/icons/edit.png" alt="Edit" width="20" height="20" />
-                                    </a>
-                                    <a asp-controller="Group" asp-action="Delete" asp-route-id="@item.Id" style="text-decoration: none;">
-                                        <img src="~/icons/garbage.png" alt="Remove" width="20" height="20" />
-                                    </a>
+                                <a asp-action="Updator" asp-controller="Home" style="text-decoration: none;">
+                                    <img src="~/icons/edit.png" alt="Edit" width="20" height="20" title="tyestp" /> Report
+                                </a>
+                            </td>
+                        </tr>
 
-                                    <a asp-action="Updator" asp-controller="Home" style="text-decoration: none;">
-                                        <img src="~/icons/edit.png" alt="Edit" width="20" height="20" title="tyestp" /> Report
-                                    </a>
-                                </td>
-                            </tr>
+                    }
 
-                        }
-
-                    </tbody>
-                </table>
-            </div>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

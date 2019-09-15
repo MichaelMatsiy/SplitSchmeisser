@@ -27,9 +27,10 @@ namespace SplitSchmeisser.BLL.Implementation
                 .ToList();
         }
 
-        public double GetUserDebsByGroup(int userId, int groupId)
+        public async ValueTask<double> GetUserDebtsByGroup(int userId, int groupId)
         {
-            var group = this.groupRepository.GetById(groupId).Result;
+            var group = await groupRepository.GetById(groupId);
+
             var memberCount = group.Users.Count();
             var operations = group.Operations
                 .ToList();
@@ -43,9 +44,9 @@ namespace SplitSchmeisser.BLL.Implementation
             return (otherPayments / memberCount) - (userPayments / memberCount);
         }
 
-        public void GetUserDebsByGroupPerUrers(int userId, int groupId)
+        public async Task GetUserDebtsByGroupPerUrers(int userId, int groupId)
         {
-            var group = this.groupRepository.GetById(groupId).Result;
+            var group = await this.groupRepository.GetById(groupId);
             //var memberCount = group.UserGroups.Count;
             //var operations = group.Operations
             //    .ToList();
@@ -87,7 +88,7 @@ namespace SplitSchmeisser.BLL.Implementation
 
         public User GetCurrUser()
         {
-            return  this.userRepository.GetAll().First(x => x.Name == CurrentUserService.UserName);
+            return this.userRepository.GetAll().First(x => x.Name == CurrentUserService.UserName);
         }
 
         public async Task CreateUserAsync(string name, string password)
@@ -103,6 +104,13 @@ namespace SplitSchmeisser.BLL.Implementation
             return this.userRepository.GetAll()
                 .FirstOrDefault(x => x.Name == userName && x.Password == password) 
                 != null;
+        }
+
+        public bool CheckUserName(string userName)
+        {
+            return this.userRepository.GetAll()
+                .FirstOrDefault(x => x.Name == userName)
+                == null;
         }
     }
 }

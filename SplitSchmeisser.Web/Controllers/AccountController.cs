@@ -32,8 +32,6 @@ namespace SplitSchmeisser.Web.Controllers
                 return RedirectToAction("Login");
             }
 
-            //Check the user name and password  
-            //Here can be implemented checking logic from the database  
 
             if (this.userService.ValidateUser(userName, password))
             {
@@ -68,7 +66,10 @@ namespace SplitSchmeisser.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Registration(UserCreateModel user)
         {
-            await this.userService.CreateUserAsync(user.Name, user.Password);
+            if (this.userService.CheckUserName(user.Name))
+            {
+                await this.userService.CreateUserAsync(user.Name, user.Password);
+            }
 
             return RedirectToAction("Login");
         }

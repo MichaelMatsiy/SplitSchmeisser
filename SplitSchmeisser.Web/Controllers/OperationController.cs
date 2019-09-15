@@ -26,17 +26,11 @@ namespace SplitSchmeisser.Web.Controllers
 
         public IActionResult Create(int id)
         {
-            var user = userService.GetUsers()
-                .ToList()
-                .First(x => x.Name == CurrentUserService.UserName);
-
-            var op = new OperationCreateModel
+            return View(new OperationCreateModel
             {
                 GroupID = id,
-                OwnerID = user.Id
-            };
-
-            return View(op);
+                OwnerID = this.userService.GetCurrUser().Id
+            });
         }
 
         [HttpPost]

@@ -3,11 +3,9 @@ using SplitSchmeisser.BLL.Models;
 using SplitSchmeisser.BLL.ReportWorker;
 using SplitSchmeisser.DAL.Entities;
 using SplitSchmeisser.DAL.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
