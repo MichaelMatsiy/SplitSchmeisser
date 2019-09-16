@@ -1,10 +1,8 @@
-﻿using SplitSchmeisser.DAL.Context;
-using SplitSchmeisser.DAL.Entities.Base;
-using SplitSchmeisser.DAL.Infrasructure;
+﻿using SplitSchmeisser.DAL.Entities.Base;
 using SplitSchmeisser.DAL.Interfaces;
-using System.Linq;
-using System.Threading;
+using SplitSchmeisser.DAL.Context;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace SplitSchmeisser.DAL.Repositories
 {
@@ -17,34 +15,25 @@ namespace SplitSchmeisser.DAL.Repositories
             this.context = context;
         }
 
-        public IQueryable<TEntity> GetAll(bool delay = false)
+        public IQueryable<TEntity> GetAll()
         {
-            if (delay)
-            {
-                Thread.Sleep(10000);
-            }
+            Logger.Write($"Records was requested was created", true);
+
             return context.Set<TEntity>();
-        }
-
-        public PagedList<TEntity> GetPagedList(int pageSize, int pageIndex)
-        {
-            var count = this.GetAll().Count();
-            var items = this.GetAll().Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
-
-            return new PagedList<TEntity>(items, count, pageIndex, pageSize);
         }
 
         public async Task<TEntity> GetById(int id)
         {
+            Logger.Write($"Record with id: {id} was requested");
             return await context.Set<TEntity>().FindAsync(id);                
         }
 
         public async Task Insert(TEntity entity)
         {
-
-            Thread.Sleep(10000);
             context.Set<TEntity>().Add(entity);
             await context.SaveChangesAsync();
+
+            Logger.Write($"Record with id: {entity.Id} was created");
         }
 
         public async Task<TEntity> UpdateAsync(TEntity entity)
@@ -57,6 +46,8 @@ namespace SplitSchmeisser.DAL.Repositories
             {
                 context.Entry(existing).CurrentValues.SetValues(entity);
                 await context.SaveChangesAsync();
+
+                Logger.Write($"Record with id: {entity.Id} was updated");
             }
             return existing;
         }
@@ -66,6 +57,8 @@ namespace SplitSchmeisser.DAL.Repositories
             var entity = await GetById(id);
             context.Set<TEntity>().Remove(entity);
             await context.SaveChangesAsync();
+
+            Logger.Write($"Record with id: {entity.Id} was removed");
         }        
     }
 }

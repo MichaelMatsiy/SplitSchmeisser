@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ReportWorker\**" />
+    <EmbeddedResource Remove="ReportWorker\**" />
+    <None Remove="ReportWorker\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.3" />
   </ItemGroup>
 
