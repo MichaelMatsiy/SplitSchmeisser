@@ -1,13 +1,14 @@
 ﻿using SplitSchmeisser.DAL.Entities;
 using System.Collections.Generic;
 using System.Linq;
+using SplitSchmeisser.BLL.CommonLogic;
 
 namespace SplitSchmeisser.BLL.Models
 {
     public class GroupDTO
     {
         public GroupDTO() {
-            this.UserDebts = new Dictionary<string, double>();
+            this.UserDebts = new List<Debt>();
         }
 
         public int Id { get; set; }
@@ -18,7 +19,7 @@ namespace SplitSchmeisser.BLL.Models
 
         public IList<OperationDTO> Operations { get; set; }
 
-        public IDictionary<string, double> UserDebts { get; set; }
+        public IList<Debt> UserDebts { get; set; }
 
         public static GroupDTO FromEntity(Group group)
         {

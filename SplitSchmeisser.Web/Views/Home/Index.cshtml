@@ -36,12 +36,11 @@
                                 <a asp-controller="Group" asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none;">
                                     <img src="~/icons/edit.png" alt="Edit" width="20" height="20" />
                                 </a>
+                                <a asp-action="Updator" asp-controller="Home" style="text-decoration: none;">
+                                    <img src="~/icons/report.png" alt="Edit" width="20" height="20" />
+                                </a>
                                 <a asp-controller="Group" asp-action="Delete" asp-route-id="@item.Id" style="text-decoration: none;">
                                     <img src="~/icons/garbage.png" alt="Remove" width="20" height="20" />
-                                </a>
-
-                                <a asp-action="Updator" asp-controller="Home" style="text-decoration: none;">
-                                    <img src="~/icons/edit.png" alt="Edit" width="20" height="20" title="tyestp" /> Report
                                 </a>
                             </td>
                         </tr>

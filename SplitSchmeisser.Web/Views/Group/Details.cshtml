@@ -90,32 +90,22 @@
                 </div>
 
                 <div class="col-sm-2 m-2">
-                    <table class="table mt-1 ml-5">
+                    <table class="table mt-1 ml-5" style="width:max-content">
                         <thead>
                             <tr>
                                 <td>
                                     <h4>Users</h4>
                                 </td>
-                                <td></td>
-                            </tr>
-                        </thead>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Debt</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var user in @Model.Debts)
                             {
-                                <tr>
-                                    <td scope="row">
-                                        @user.Key
-                                    </td>
-                                    <td>
-                                        @user.Value
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td>
+                                   <b>@user.Debtor</b> owes <b>@user.Amount</b> to <b>@user.Borrower</b>
+                                </td>
+                            </tr>
                             }
 
                         </tbody>

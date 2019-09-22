@@ -30,32 +30,6 @@ namespace SplitSchmeisser.BLL.Implementation
                .ToList();
         }
 
-        public async Task<IDictionary<string, double>> GetUsersDebtByGroup(GroupDTO groupDto)
-        {
-            IDictionary<string, double> userDebts = new Dictionary<string, double>();
-
-            //Parallel.ForEach(groupDto.Users, async item =>
-            //{
-            //    var debt = await this.userService.GetUserDebtsByGroup(item.Id, groupDto.Id);
-
-            //    if (debt > 0) userDebts.Add(item.Name, debt);
-            //});
-
-            foreach (var item in groupDto.Users)
-            {
-                var debt = await this.userService.GetUserDebtsByGroup(item.Id, groupDto.Id);
-
-                if (debt > 0) userDebts.Add(item.Name, debt);
-            }
-
-            return userDebts;
-        }
-
-        public IList<OperationDTO> GetAllUsersOperations(int userId)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public async Task CreateOperation(int ownerId, int groupId, double amount, string Description = "")
         {
             await this.operationRepository.Insert(new Operation

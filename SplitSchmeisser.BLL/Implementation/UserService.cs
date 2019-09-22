@@ -1,5 +1,6 @@
 ﻿using SplitSchmeisser.BLL.Interfaces;
 using SplitSchmeisser.BLL.Models;
+using SplitSchmeisser.BLL.CommonLogic;
 using SplitSchmeisser.DAL.Entities;
 using SplitSchmeisser.DAL.Interfaces;
 using System.Collections.Generic;
@@ -44,19 +45,90 @@ namespace SplitSchmeisser.BLL.Implementation
             return (otherPayments / memberCount) - (userPayments / memberCount);
         }
 
-        public async Task GetUserDebtsByGroupPerUrers(int userId, int groupId)
+
+
+        private List<CommonLogic.Debt> ResolveDebts(UserDebts userDebts) {
+
+            List<Debt> resolvedList = new List<Debt>();
+
+            foreach (var item in userDebts)
+            {
+                var debts = userDebts.GetDebts().Where(x => x.Borrower == item.Debtor && x.Debtor == item.Borrower).ToList();
+
+                if (debts.Count > 0 && debts.Count < 2)
+                {
+
+                    if (debts.First().Amount > item.Amount)
+                    {
+                        debts.First().Amount -= item.Amount;
+                        resolvedList.Add(debts.First());
+                    }
+                    else if (debts.First().Amount < item.Amount)
+                    {
+                        item.Amount -= debts.First().Amount;
+                        resolvedList.Add(item);
+
+                    }
+                    else if (debts.First().Amount == item.Amount)
+                    {
+                        continue;
+                    }
+                }
+                else if (debts.Count > 1) {
+
+                    foreach (var d in debts) {
+                        if (d.Amount > item.Amount)
+                        {
+                            d.Amount -= item.Amount;
+                            resolvedList.Add(d);
+                        }
+                        else if (d.Amount < item.Amount)
+                        {
+                            item.Amount -= d.Amount;
+                            resolvedList.Add(item);
+
+                        }
+                        else if (d.Amount == item.Amount)
+                        {
+                            continue;
+                        }
+                    }
+                }
+                else
+                {
+                    resolvedList.Add(item);
+                }
+            }
+
+            return resolvedList;
+        }
+
+        public async Task<List<CommonLogic.Debt>> GetUserDebtsByGroupPerUrers(GroupDTO group)
         {
-            var group = await this.groupRepository.GetById(groupId);
-            //var memberCount = group.UserGroups.Count;
-            //var operations = group.Operations
-            //    .ToList();
+           return await Task.Run(() =>
+           {
+               var userDebts = new UserDebts();
+               
+               var users = group.Users.ToList();
 
-            //var userPayments = operations.Where(x => x.Owner.Id == userId)
-            //    .Sum(x => x.Amount);
+               foreach (var u in users)
+               {
+                   var userPayments = group.Operations.Where(x => x.Owner.Id == u.Id)
+                       .Sum(x => x.Amount);
 
-            //var otherOperations = operations.Where(x => x.Owner.Id != userId).GroupBy(x => x.Owner).ToList();
+                   if ((userPayments / users.Count) > 0)
+                   {
+                       var debtors = users.Where(x => x.Id != u.Id);
 
-            //var debt = otherOperations.ToDictionary(x => x.Key, x => (x.Sum(s => s.Amount) / memberCount) - (userPayments/ memberCount));
+                       foreach (var d in debtors)
+                       {
+                           userDebts.Add(u.Name, (userPayments / users.Count), d.Name);
+                       }
+                   }
+               }
+
+               return ResolveDebts(userDebts);
+           });
         }
 
         //test
@@ -73,9 +145,9 @@ namespace SplitSchmeisser.BLL.Implementation
 
             var userAmount = group.FirstOrDefault(x => x.id == user).amount;
 
-            var otherAmounts = group.Where(x=>x.id != user).GroupBy(x => x.id);
+            var otherAmounts = group.Where(x => x.id != user).GroupBy(x => x.id);
 
-            var debt = otherAmounts.ToDictionary(x => x.Key, x => (x.Sum(s => s.amount) / 3) - userAmount/3);
+            var debt = otherAmounts.ToDictionary(x => x.Key, x => (x.Sum(s => s.amount) / 3) - userAmount / 3);
 
         }
 
@@ -100,9 +172,10 @@ namespace SplitSchmeisser.BLL.Implementation
             });
         }
 
-        public bool ValidateUser(string userName, string password) {
+        public bool ValidateUser(string userName, string password)
+        {
             return this.userRepository.GetAll()
-                .FirstOrDefault(x => x.Name == userName && x.Password == password) 
+                .FirstOrDefault(x => x.Name == userName && x.Password == password)
                 != null;
         }
 

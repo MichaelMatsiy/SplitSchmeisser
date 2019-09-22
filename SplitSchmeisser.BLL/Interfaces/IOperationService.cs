@@ -10,10 +10,6 @@ namespace SplitSchmeisser.BLL.Interfaces
 
         IList<OperationDTO> GetOperations();
 
-        IList<OperationDTO> GetAllUsersOperations(int userId);
-
-        Task<IDictionary<string, double>> GetUsersDebtByGroup(GroupDTO groupDto);
-
         Task DeleteAsync(int id);
 
         Task UpdateOperation(OperationDTO dto);
