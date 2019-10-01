@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace SplitSchmeisser.Web.Models
 {
+    [Serializable]
     public class UserViewModel
     {
         public UserViewModel()

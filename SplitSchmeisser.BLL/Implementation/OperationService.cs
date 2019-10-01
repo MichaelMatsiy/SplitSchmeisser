@@ -67,11 +67,11 @@ namespace SplitSchmeisser.BLL.Implementation
         {
             var ops = operationRepository.GetAll()
                .ToList()
-               .Select(x => OperationDTO.FromEntity(x))
-               .ToList()
                .Where(x => x.GroupId == groupId)
+               .ToList()
+               .Select(x => OperationDTO.FromEntity(x))
                .ToList();
-
+               
             return ops;
         }
     }

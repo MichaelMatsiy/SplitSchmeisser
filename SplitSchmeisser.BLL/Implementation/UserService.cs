@@ -131,33 +131,6 @@ namespace SplitSchmeisser.BLL.Implementation
            });
         }
 
-        //test
-        public void TestSum()
-        {
-            var user = 3;
-
-            var group = new List<UserDebt>
-            {
-                new UserDebt { id = 1, amount = 900 },
-                new UserDebt { id = 2, amount = 120 },
-                new UserDebt { id = 3, amount = 0}
-            };
-
-            var userAmount = group.FirstOrDefault(x => x.id == user).amount;
-
-            var otherAmounts = group.Where(x => x.id != user).GroupBy(x => x.id);
-
-            var debt = otherAmounts.ToDictionary(x => x.Key, x => (x.Sum(s => s.amount) / 3) - userAmount / 3);
-
-        }
-
-        public class UserDebt
-        {
-            public int id { get; set; }
-
-            public int amount { get; set; }
-        }
-
         public User GetCurrUser()
         {
             return this.userRepository.GetAll().First(x => x.Name == CurrentUserService.UserName);

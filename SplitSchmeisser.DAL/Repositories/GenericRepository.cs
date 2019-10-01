@@ -9,6 +9,7 @@ namespace SplitSchmeisser.DAL.Repositories
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
     {
         private SchmeisserContext context;
+        private bool delay = false;
 
         public GenericRepository(SchmeisserContext context)
         {
@@ -17,14 +18,12 @@ namespace SplitSchmeisser.DAL.Repositories
 
         public IQueryable<TEntity> GetAll()
         {
-            Logger.Write($"Records was requested was created", true);
-
             return context.Set<TEntity>();
         }
 
         public async Task<TEntity> GetById(int id)
         {
-            Logger.Write($"Record with id: {id} was requested");
+            Logger.Write($"Record with id: {id} was requested", delay);
             return await context.Set<TEntity>().FindAsync(id);                
         }
 
@@ -33,7 +32,7 @@ namespace SplitSchmeisser.DAL.Repositories
             context.Set<TEntity>().Add(entity);
             await context.SaveChangesAsync();
 
-            Logger.Write($"Record with id: {entity.Id} was created");
+            Logger.Write($"Record with id: {entity.Id} was created", delay);
         }
 
         public async Task<TEntity> UpdateAsync(TEntity entity)
@@ -47,7 +46,7 @@ namespace SplitSchmeisser.DAL.Repositories
                 context.Entry(existing).CurrentValues.SetValues(entity);
                 await context.SaveChangesAsync();
 
-                Logger.Write($"Record with id: {entity.Id} was updated");
+                Logger.Write($"Record with id: {entity.Id} was updated", delay);
             }
             return existing;
         }
@@ -58,7 +57,7 @@ namespace SplitSchmeisser.DAL.Repositories
             context.Set<TEntity>().Remove(entity);
             await context.SaveChangesAsync();
 
-            Logger.Write($"Record with id: {entity.Id} was removed");
+            Logger.Write($"Record with id: {entity.Id} was removed", delay);
         }        
     }
 }

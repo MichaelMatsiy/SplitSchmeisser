@@ -7,7 +7,7 @@
     <div class="container">
 
         <div>
-            <a asp-controller="Home" asp-action="Index" style="text-decoration: none; color: black;">
+            <a asp-controller="Home" asp-action="Index" class="content-heading text-muted text-decoration-none text-dark" >
                 <img src="~/icons/back.png" alt="Back to List" width="20" height="20" /><span class="mt-2">Back To List</span>
             </a>
         </div>
@@ -19,7 +19,10 @@
                         <h1>@Html.DisplayFor(model => model.Name)</h1>
                     </div>
                     <a asp-controller="Group" asp-action="Edit" asp-route-id="@Model.Id" class="content-heading text-muted text-decoration-none">
-                        <img src="~/icons/edit.png" alt="Edit" width="20" height="20" />
+                        <img src="~/icons/edit.png" alt="Edit" width="20" height="20" title="Edit"/>
+                    </a>
+                    <a asp-controller="Group" asp-action="GenerateReportGroup" asp-route-id="@Model.Id" class="content-heading text-muted text-decoration-none">
+                        <img src="~/icons/report.png" alt="Generate Report" width="20" height="20" title="Generate Report"/>
                     </a>
                 </div>
             </div>
@@ -34,17 +37,26 @@
                         <thead>
                             <tr>
                                 <td>
-                                    <h4>List of the Operations</h4>
+                                    <div class="paragraphs">
+                                        <div class="row">
+                                            <div class="span4">
+                                                <div class="mr-3 float-left">
+                                                    <h4>List of the Operations</h4>
+                                                </div>
+                                                <a asp-controller="Operation" asp-action="GenerateReportOperations" asp-route-id="@Model.Id" class="content-heading text-muted text-decoration-none">
+                                                    <img src="~/icons/report.png" alt="Generate Report" width="20" height="20" title="Generate Report"/>
+                                                </a>
+                                                <a asp-controller="Operation" asp-action="Create" asp-route-id="@Model.Id" class="content-heading text-muted text-decoration-none">
+                                                    <img src="~/icons/pay.png" alt="Add payment" width="20" height="20" title="Add payment" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
 
                                 <td></td>
                                 <td></td>
-                                <td class="text-left">
-                                    <a asp-controller="Operation" asp-action="Create" asp-route-id="@Model.Id" class="content-heading text-muted text-decoration-none">
-                                        <img src="~/icons/pay.png" alt="Pay" width="20" height="20" title="Add payment" /> Add payment
-                                    </a>
-
-                                </td>
+                                <td></td>
                                 <td></td>
                             </tr>
 
@@ -76,10 +88,13 @@
                                         @Html.DisplayFor(modelItem => item.Description)
                                     </td>
                                     <td style="text-align: right;">
-                                        <a asp-controller="Operation" asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none;">
+                                        <a asp-controller="Operation" asp-action="Edit" asp-route-id="@item.Id" class="text-decoration-none">
                                             <img src="~/icons/edit.png" alt="Edit" width="20" height="20" />
                                         </a>
-                                        <a asp-controller="Operation" asp-action="Delete" asp-route-id="@item.Id" style="text-decoration: none;">
+                                        <a asp-controller="Operation" asp-action="GenerateReportOperation" asp-route-id="@item.Id" class="text-decoration-none">
+                                            <img src="~/icons/report.png" alt="Report" width="20" height="20" />
+                                        </a>
+                                        <a asp-controller="Operation" asp-action="Delete" asp-route-id="@item.Id" class="text-decoration-none">
                                             <img src="~/icons/garbage.png" alt="Remove" width="20" height="20" />
                                         </a>
                                     </td>
@@ -90,24 +105,34 @@
                 </div>
 
                 <div class="col-sm-2 m-2">
-                    <table class="table mt-1 ml-5" style="width:max-content">
+                    <table class="table mt-1 ml-5" style="width: max-content">
                         <thead>
                             <tr>
                                 <td>
-                                    <h4>Users</h4>
+                                    <div class="paragraphs">
+                                        <div class="row">
+                                            <div class="span4">
+                                                <div class="mr-3 float-left">
+                                                    <h4>Users</h4>
+                                                </div>
+                                                <a asp-controller="Group" asp-action="GenerateReportDebts" asp-route-id="@Model.Id" class="content-heading text-muted text-decoration-none">
+                                                    <img src="~/icons/report.png" alt="Generate Report" width="20" height="20" title="Generate Report" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var user in @Model.Debts)
                             {
-                            <tr>
-                                <td>
-                                   <b>@user.Debtor</b> owes <b>@user.Amount</b> to <b>@user.Borrower</b>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>
+                                        <b>@user.Debtor</b> owes <b>@user.Amount</b> to <b>@user.Borrower</b>
+                                    </td>
+                                </tr>
                             }
-
                         </tbody>
                     </table>
                 </div>

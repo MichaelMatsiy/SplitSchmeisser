@@ -15,11 +15,11 @@ namespace SplitSchmeisser.BLL.Models
 
         public string Name { get; set; }
 
-        public IList<UserDTO> Users { get; set; }
+        public List<UserDTO> Users { get; set; }
 
-        public IList<OperationDTO> Operations { get; set; }
+        public List<OperationDTO> Operations { get; set; }
 
-        public IList<Debt> UserDebts { get; set; }
+        public List<Debt> UserDebts { get; set; }
 
         public static GroupDTO FromEntity(Group group)
         {

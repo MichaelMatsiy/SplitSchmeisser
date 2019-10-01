@@ -16,7 +16,7 @@ namespace SplitSchmeisser.DAL
                 using (StreamWriter sw = new StreamWriter(File.Open(path, FileMode.Append)))
                 {
                     sw.WriteLineAsync($"{DateTime.Now.ToLongTimeString()} --> {str}");
-                    if(delay) Thread.Sleep(10000);
+                    if(delay) Thread.Sleep(5000);
                 }
             }
         }

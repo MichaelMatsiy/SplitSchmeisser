@@ -36,4 +36,10 @@
     <Folder Include="Views\Report\" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Xml.Serialization" />
+  </ItemGroup>
+
 </Project>

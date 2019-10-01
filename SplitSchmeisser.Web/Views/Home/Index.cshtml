@@ -13,33 +13,42 @@
             <table class="table mt-1">
                 <thead>
                     <tr>
-                        <td class="text-center"><h4>My Groups</h4></td>
-
-                        <td class="text-righ">
-                            <a asp-action="Create" asp-controller="Group" style="text-decoration: none;">
-                                <img src="~/icons/edit.png" alt="Edit" width="20" height="20" title="Create a new group" /> Create New
-                            </a>
-
+                        <td>
+                            <div class="paragraphs">
+                                <div class="row">
+                                    <div class="span4">
+                                        <div class="mr-3 float-left">
+                                            <h4>My Groups</h4>
+                                        </div>
+                                        <a asp-controller="Group" asp-action="Create" class="text-decoration-none">
+                                            <img src="~/icons/add.png" alt="Add New" width="20" height="20" title="Add New" />
+                                        </a>
+                                        <a asp-controller="Group" asp-action="GenerateReportGroups" class="content-heading text-muted text-decoration-none">
+                                            <img src="~/icons/report.png" alt="Generate Report" width="20" height="20" title="Generate Report" />
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </td>
+                        <td></td>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
                     {
                         <tr>
                             <td style="text-align: left;">
-                                <a asp-controller="Group" asp-action="Details" asp-route-id="@item.Id" style="text-decoration: none;">
+                                <a asp-controller="Group" asp-action="Details" asp-route-id="@item.Id" class="text-decoration-none">
                                     @Html.DisplayFor(modelItem => item.Name)
                                 </a>
-
                             </td>
                             <td style="text-align: right;">
-                                <a asp-controller="Group" asp-action="Edit" asp-route-id="@item.Id" style="text-decoration: none;">
+                                <a asp-controller="Group" asp-action="Edit" asp-route-id="@item.Id" class="text-decoration-none">
                                     <img src="~/icons/edit.png" alt="Edit" width="20" height="20" />
                                 </a>
-                                <a asp-action="Updator" asp-controller="Home" style="text-decoration: none;">
-                                    <img src="~/icons/report.png" alt="Edit" width="20" height="20" />
+                                <a asp-controller="Group" asp-action="GenerateReportGroups" asp-route-id="@item.Id" class="text-decoration-none">
+                                    <img src="~/icons/report.png" alt="Report" width="20" height="20" />
                                 </a>
-                                <a asp-controller="Group" asp-action="Delete" asp-route-id="@item.Id" style="text-decoration: none;">
+                                <a asp-controller="Group" asp-action="Delete" asp-route-id="@item.Id" class="text-decoration-none">
                                     <img src="~/icons/garbage.png" alt="Remove" width="20" height="20" />
                                 </a>
                             </td>
