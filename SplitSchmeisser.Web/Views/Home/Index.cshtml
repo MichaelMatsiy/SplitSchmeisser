@@ -23,7 +23,7 @@
                                         <a asp-controller="Group" asp-action="Create" class="text-decoration-none">
                                             <img src="~/icons/add.png" alt="Add New" width="20" height="20" title="Add New" />
                                         </a>
-                                        <a asp-controller="Group" asp-action="GenerateReportGroups" class="content-heading text-muted text-decoration-none">
+                                        <a asp-controller="Group" asp-action="RedirectToReports" class="content-heading text-muted text-decoration-none">
                                             <img src="~/icons/report.png" alt="Generate Report" width="20" height="20" title="Generate Report" />
                                         </a>
                                     </div>
@@ -45,7 +45,7 @@
                                 <a asp-controller="Group" asp-action="Edit" asp-route-id="@item.Id" class="text-decoration-none">
                                     <img src="~/icons/edit.png" alt="Edit" width="20" height="20" />
                                 </a>
-                                <a asp-controller="Group" asp-action="GenerateReportGroups" asp-route-id="@item.Id" class="text-decoration-none">
+                                <a asp-controller="Group" asp-action="RedirectToReports" asp-route-id="@item.Id" class="text-decoration-none">
                                     <img src="~/icons/report.png" alt="Report" width="20" height="20" />
                                 </a>
                                 <a asp-controller="Group" asp-action="Delete" asp-route-id="@item.Id" class="text-decoration-none">

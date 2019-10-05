@@ -1,12 +1,16 @@
 ﻿using SplitSchmeisser.DAL.Entities;
 using System;
+using System.Xml.Serialization;
 
 namespace SplitSchmeisser.BLL.Models
 {
+    [Serializable, XmlRoot(ElementName = "Operation")]
     public class OperationDTO
     {
+        [XmlIgnore]
         public int Id { get; set; }
         public UserDTO Owner { get; set; }
+        [XmlIgnore]
         public int GroupId { get; set; }
         public DateTime DateOfLoan { get; set; }
         public double Amount { get; set; }

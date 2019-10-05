@@ -8,6 +8,7 @@ using SplitSchmeisser.BLL.Models;
 using SplitSchmeisser.Web.Models;
 using System.IO;
 using System.Collections.Generic;
+using SplitSchmeisser.BLL.CommonLogic;
 
 namespace SplitSchmeisser.Web.Controllers
 {
@@ -124,6 +125,13 @@ namespace SplitSchmeisser.Web.Controllers
             }
         }
 
+        public IActionResult RedirectToReports(OperationReportTypes type, int id)
+        {
+            return type == OperationReportTypes.Group
+                ? RedirectToAction("Operations", "Report", new { groupId = id })
+                : RedirectToAction("Operation", "Report", new { operationId = id });
+        }
+
         public async Task<IActionResult> GenerateReportOperations(int id)
         {
             var dto = await this.groupService.GetGroupById(id);
@@ -145,8 +153,11 @@ namespace SplitSchmeisser.Web.Controllers
             };
 
             Response.Headers.Add("Content-Disposition", cd.ToString());
+            
+
             return File(bytes, System.Net.Mime.MediaTypeNames.Text.Xml);
         }
+
 
         public async Task<IActionResult> GenerateReportOperation(int id)
         {

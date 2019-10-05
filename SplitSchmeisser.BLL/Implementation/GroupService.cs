@@ -4,6 +4,7 @@ using SplitSchmeisser.DAL.Entities;
 using SplitSchmeisser.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 

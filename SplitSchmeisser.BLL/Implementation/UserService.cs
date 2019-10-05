@@ -46,7 +46,6 @@ namespace SplitSchmeisser.BLL.Implementation
         }
 
 
-
         private List<CommonLogic.Debt> ResolveDebts(UserDebts userDebts) {
 
             List<Debt> resolvedList = new List<Debt>();

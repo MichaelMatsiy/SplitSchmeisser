@@ -17,33 +17,15 @@ namespace SplitSchmeisser.Web.Controllers
         IGroupService groupService;
         IReportService reportService;
         IUserService userService;
-        IOperationService operationService;
          
 
         public HomeController(IGroupService groupService, 
             IReportService reportService,
-            IOperationService operationService,
             IUserService userService)
         {
             this.groupService = groupService;
             this.reportService = reportService;
-            this.operationService = operationService;
             this.userService = userService;
-        }
-
-        public async Task<IActionResult> Updator() {
-
-            var rep = await this.reportService.GetReport(new BLL.Models.ReportRequest
-            {
-                StartDate = DateTime.Now.AddYears(-1),
-                EndDate = DateTime.Now.AddYears(10),
-                GroupId = 1
-            });
-
-            var result = rep.Select(x => OperationDTO.FromEntity(x))
-                .Select(x=> OperationViewModel.FromDTO(x)).ToList();
-
-            return View("Report", result);
         }
 
         public IActionResult Index()

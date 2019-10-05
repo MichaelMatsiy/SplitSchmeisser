@@ -19,12 +19,15 @@ namespace SplitSchmeisser.Web.Controllers
     {
         IGroupService groupService;
         IUserService userService;
+        IReportService reportService;
 
         public GroupController(IGroupService groupService,
-            IUserService userService)
+            IUserService userService, 
+            IReportService reportService)
         {
             this.groupService = groupService;
             this.userService = userService;
+            this.reportService = reportService;
         }
 
         public async Task<IActionResult> Details(int id)
@@ -107,79 +110,16 @@ namespace SplitSchmeisser.Web.Controllers
             });
         }
 
-        public async Task<IActionResult> GenerateReportGroup(int id)
-        {
-            var dto = await this.groupService.GetGroupById(id);
-            dto.UserDebts = await this.userService.GetUserDebtsByGroupPerUrers(dto);
-
-            byte[] bytes = null;
-            XmlSerializer xs = new XmlSerializer(typeof(GroupViewModel));
-
-            using (var ms = new MemoryStream())
-            {
-                xs.Serialize(ms, GroupViewModel.FromDTO(dto));
-                bytes = ms.ToArray();
-            }
-
-            var cd = new System.Net.Mime.ContentDisposition
-            {
-                FileName = $"{dto.Name}.xml",
-                Inline = false,
-            };
-
-            Response.Headers.Add("Content-Disposition", cd.ToString());
-            return File(bytes, System.Net.Mime.MediaTypeNames.Text.Xml);
+        public IActionResult RedirectToReports(int? id)
+        {   
+            return id == null 
+                ? RedirectToAction("Groups", "Report") 
+                : RedirectToAction("Group", "Report", new { id});
         }
 
-        public async Task<IActionResult> GenerateReportGroups()
+        public IActionResult GenerateReportDebts(int id)
         {
-            var currUser = this.userService.GetCurrUser();
-            var gr = this.groupService.GetGroups()
-                .Select(x => GroupListModel.FromDTO(x))
-                .Where(x => x.UserIDs.Contains(currUser.Id))
-                .ToList();
-
-            byte[] bytes = null;
-            XmlSerializer xs = new XmlSerializer(typeof(List<GroupListModel>));
-
-            using (var ms = new MemoryStream())
-            {
-                xs.Serialize(ms, gr);
-                bytes = ms.ToArray();
-            }
-
-            var cd = new System.Net.Mime.ContentDisposition
-            {
-                FileName = $"{currUser.Name} - Groups.xml",
-                Inline = false,
-            };
-
-            Response.Headers.Add("Content-Disposition", cd.ToString());
-            return File(bytes, System.Net.Mime.MediaTypeNames.Text.Xml);
-        }
-
-        public async Task<IActionResult> GenerateReportDebts(int id)
-        {
-            var dto = await this.groupService.GetGroupById(id);
-            var userDebts = await this.userService.GetUserDebtsByGroupPerUrers(dto);
-
-            byte[] bytes = null;
-            XmlSerializer xs = new XmlSerializer(typeof(List<Debt>));
-
-            using (var ms = new MemoryStream())
-            {
-                xs.Serialize(ms, userDebts);
-                bytes = ms.ToArray();
-            }
-
-            var cd = new System.Net.Mime.ContentDisposition
-            {
-                FileName = $"{dto.Name} - UserDebts.xml",
-                Inline = false,
-            };
-
-            Response.Headers.Add("Content-Disposition", cd.ToString());
-            return File(bytes, System.Net.Mime.MediaTypeNames.Text.Xml);
+            return RedirectToAction("Debts", "Report", new { id });
         }
     }
 }
