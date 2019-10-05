@@ -7,10 +7,6 @@ using Microsoft.AspNetCore.Routing;
 using SplitSchmeisser.BLL.Interfaces;
 using SplitSchmeisser.BLL.Models;
 using SplitSchmeisser.Web.Models;
-using System.Xml.Serialization;
-using System.IO;
-using SplitSchmeisser.BLL.CommonLogic;
-using System.Collections.Generic;
 
 namespace SplitSchmeisser.Web.Controllers
 {
@@ -19,15 +15,12 @@ namespace SplitSchmeisser.Web.Controllers
     {
         IGroupService groupService;
         IUserService userService;
-        IReportService reportService;
 
         public GroupController(IGroupService groupService,
-            IUserService userService, 
-            IReportService reportService)
+            IUserService userService)
         {
             this.groupService = groupService;
             this.userService = userService;
-            this.reportService = reportService;
         }
 
         public async Task<IActionResult> Details(int id)

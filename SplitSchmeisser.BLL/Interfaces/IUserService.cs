@@ -9,7 +9,7 @@ namespace SplitSchmeisser.BLL.Interfaces
     {
         ValueTask<double> GetUserDebtsByGroup(int userId, int groupId);
 
-        Task<List<CommonLogic.Debt>> GetUserDebtsByGroupPerUrers(GroupDTO groupId);
+        Task<List<Debt>> GetUserDebtsByGroupPerUrers(GroupDTO groupId);
 
         IList<UserDTO> GetUsers();
 

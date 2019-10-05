@@ -13,14 +13,10 @@ namespace SplitSchmeisser.BLL.Implementation
     {
         private IGenericRepository<Operation> operationRepository;
 
-        private IUserService userService;
-
         public OperationService(
-           IGenericRepository<Operation> operationRepository,
-           IUserService userService)
+           IGenericRepository<Operation> operationRepository)
         {
             this.operationRepository = operationRepository;
-            this.userService = userService;
         }
 
         public IList<OperationDTO> GetOperations()

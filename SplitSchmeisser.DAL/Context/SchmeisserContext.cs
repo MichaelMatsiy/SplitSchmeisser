@@ -15,7 +15,6 @@ namespace SplitSchmeisser.DAL.Context
         }
     }
 
-
     [DbConfigurationType(typeof(DbConfig))]
     public class SchmeisserContext : DbContext
     {

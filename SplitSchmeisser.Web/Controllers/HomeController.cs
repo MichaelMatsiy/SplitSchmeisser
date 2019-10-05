@@ -15,16 +15,13 @@ namespace SplitSchmeisser.Web.Controllers
     public class HomeController : Controller
     {
         IGroupService groupService;
-        IReportService reportService;
         IUserService userService;
          
 
         public HomeController(IGroupService groupService, 
-            IReportService reportService,
             IUserService userService)
         {
             this.groupService = groupService;
-            this.reportService = reportService;
             this.userService = userService;
         }
 

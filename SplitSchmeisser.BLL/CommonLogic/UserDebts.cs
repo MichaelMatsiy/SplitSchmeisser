@@ -1,29 +1,12 @@
 ﻿using System.Collections.Generic;
-using SplitSchmeisser.BLL.Interfaces;
 using System;
+using SplitSchmeisser.BLL.Models;
 
 namespace SplitSchmeisser.BLL.CommonLogic
 {
     [Serializable]
-    public class Debt {
-        public Debt() { }
-
-        public Debt(string borrower, double amount, string debtor)
-        {
-            this.Borrower = borrower;
-            this.Amount = amount;
-            this.Debtor = debtor;
-        }
-        public string Borrower { get; set; }
-        public double Amount { get; set; }
-        public string Debtor { get; set; }
-    }
-
-    [Serializable]
     public class UserDebts
     {
-        private IUserService userService;
-
         private List<Debt> debts;
 
         public UserDebts()

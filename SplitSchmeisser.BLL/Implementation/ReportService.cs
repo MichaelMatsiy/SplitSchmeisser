@@ -1,10 +1,8 @@
-﻿using SplitSchmeisser.BLL.CommonLogic;
-using SplitSchmeisser.BLL.Interfaces;
+﻿using SplitSchmeisser.BLL.Interfaces;
 using SplitSchmeisser.BLL.Models;
 using SplitSchmeisser.DAL.Entities;
 using SplitSchmeisser.DAL.Interfaces;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;

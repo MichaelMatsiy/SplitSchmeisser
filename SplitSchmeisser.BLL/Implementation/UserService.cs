@@ -6,6 +6,7 @@ using SplitSchmeisser.DAL.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace SplitSchmeisser.BLL.Implementation
 {
@@ -46,7 +47,7 @@ namespace SplitSchmeisser.BLL.Implementation
         }
 
 
-        private List<CommonLogic.Debt> ResolveDebts(UserDebts userDebts) {
+        private List<Debt> ResolveDebts(UserDebts userDebts) {
 
             List<Debt> resolvedList = new List<Debt>();
 
@@ -102,7 +103,7 @@ namespace SplitSchmeisser.BLL.Implementation
             return resolvedList;
         }
 
-        public async Task<List<CommonLogic.Debt>> GetUserDebtsByGroupPerUrers(GroupDTO group)
+        public async Task<List<Debt>> GetUserDebtsByGroupPerUrers(GroupDTO group)
         {
            return await Task.Run(() =>
            {
@@ -121,7 +122,7 @@ namespace SplitSchmeisser.BLL.Implementation
 
                        foreach (var d in debtors)
                        {
-                           userDebts.Add(u.Name, (userPayments / users.Count), d.Name);
+                           userDebts.Add(u.Name, Math.Round((userPayments / users.Count), 2), d.Name);
                        }
                    }
                }

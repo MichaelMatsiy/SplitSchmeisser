@@ -1,6 +1,5 @@
 ﻿using SplitSchmeisser.DAL.Entities.Base;
 using System;
-using System.Collections.Generic;
 
 namespace SplitSchmeisser.DAL.Entities
 {

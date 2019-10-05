@@ -131,55 +131,5 @@ namespace SplitSchmeisser.Web.Controllers
                 ? RedirectToAction("Operations", "Report", new { groupId = id })
                 : RedirectToAction("Operation", "Report", new { operationId = id });
         }
-
-        public async Task<IActionResult> GenerateReportOperations(int id)
-        {
-            var dto = await this.groupService.GetGroupById(id);
-            var operations = dto.Operations.Select(x => OperationViewModel.FromDTO(x)).ToList();
-
-            byte[] bytes = null;
-            XmlSerializer xs = new XmlSerializer(typeof(List<OperationViewModel>));
-
-            using (var ms = new MemoryStream())
-            {
-                xs.Serialize(ms, operations);
-                bytes = ms.ToArray();
-            }
-
-            var cd = new System.Net.Mime.ContentDisposition
-            {
-                FileName = $"{dto.Name} - Operations.xml",
-                Inline = false,
-            };
-
-            Response.Headers.Add("Content-Disposition", cd.ToString());
-            
-
-            return File(bytes, System.Net.Mime.MediaTypeNames.Text.Xml);
-        }
-
-
-        public async Task<IActionResult> GenerateReportOperation(int id)
-        {
-            var dto = await this.operationService.GetOperationById(id);
-
-            byte[] bytes = null;
-            XmlSerializer xs = new XmlSerializer(typeof(OperationViewModel));
-
-            using (var ms = new MemoryStream())
-            {
-                xs.Serialize(ms, OperationViewModel.FromDTO(dto));
-                bytes = ms.ToArray();
-            }
-
-            var cd = new System.Net.Mime.ContentDisposition
-            {
-                FileName = $"Operations - {dto.Description} - {dto.DateOfLoan.Date.ToString("yyyy-mm-dd")}.xml",
-                Inline = false,
-            };
-
-            Response.Headers.Add("Content-Disposition", cd.ToString());
-            return File(bytes, System.Net.Mime.MediaTypeNames.Text.Xml);
-        }
     }
 }

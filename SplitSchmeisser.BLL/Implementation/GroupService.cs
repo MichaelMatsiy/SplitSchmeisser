@@ -4,7 +4,6 @@ using SplitSchmeisser.DAL.Entities;
 using SplitSchmeisser.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,23 +13,17 @@ namespace SplitSchmeisser.BLL.Implementation
     {
         private IGenericRepository<Group> groupRepository;
         private IGenericRepository<User> userRepository;
-        private IGenericRepository<Operation> operationRepository;
 
         private IUserService userService;
-        private IOperationService operationService;
 
         public GroupService(
             IGenericRepository<Group> groupRepository,
             IGenericRepository<User> userRepository,
-            IGenericRepository<Operation> operationRepository,
-            IUserService userService,
-            IOperationService operationService)
+            IUserService userService)
         {
             this.groupRepository = groupRepository;
             this.userRepository = userRepository;
-            this.operationRepository = operationRepository;
             this.userService = userService;
-            this.operationService = operationService;
         }
 
         public async Task AddUserToGroup(int groupId, int userId)

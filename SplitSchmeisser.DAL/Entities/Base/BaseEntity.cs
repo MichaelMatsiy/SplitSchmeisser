@@ -1,5 +1,4 @@
-﻿
-namespace SplitSchmeisser.DAL.Entities.Base
+﻿namespace SplitSchmeisser.DAL.Entities.Base
 {
     public class BaseEntity
     {
