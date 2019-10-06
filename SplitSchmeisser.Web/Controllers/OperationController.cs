@@ -46,14 +46,7 @@ namespace SplitSchmeisser.Web.Controllers
                 op.Description
              );
 
-            return RedirectToAction("Details",
-                new RouteValueDictionary(
-                    new
-                    {
-                        controller = "Group",
-                        action = "Details",
-                        Id = op.GroupID
-                    }));
+            return RedirectToAction("Details", "Group", new { Id = op.GroupID });
         }
 
         public async Task<IActionResult> Edit(int id)
@@ -79,14 +72,7 @@ namespace SplitSchmeisser.Web.Controllers
                     Amount = operation.Amount
                 });
 
-                return RedirectToAction("Details",
-                    new RouteValueDictionary(
-                        new
-                        {
-                            controller = "Group",
-                            action = "Details",
-                            Id = operation.GroupId
-                        }));
+                return RedirectToAction("Details", "Group", new { Id = operation.GroupId });
             }
 
             return View(operation);
@@ -94,35 +80,11 @@ namespace SplitSchmeisser.Web.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            var groupId = this.operationService.GetOperations()
-                .First(x => x.Id == id)
-                .GroupId;
+            var operationDto = await this.operationService.GetOperationById(id);
 
-            await this.operationService.DeleteAsync(id);
+            await this.operationService.DeleteAsync(operationDto);
 
-            var opCount = this.operationService
-                .GetAllOperationsByGroup(groupId)
-                .Count;
-
-            if (opCount > 0)
-            {
-                return RedirectToAction("Details",
-                    new RouteValueDictionary(
-                        new
-                        {
-                            controller = "Group",
-                            action = "Details",
-                            Id = groupId
-                        }));
-            }
-            else {
-
-                await this.groupService.Delete(groupId);
-                return RedirectToRoute("Default", new {
-                    controller = "",
-                    action = ""
-                });
-            }
+            return RedirectToAction("Details", "Group", new { id = operationDto.GroupId });
         }
 
         public IActionResult RedirectToReports(OperationReportTypes type, int id)

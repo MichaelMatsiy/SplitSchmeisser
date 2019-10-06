@@ -27,24 +27,27 @@ namespace SplitSchmeisser.Web.Controllers
         {
             var groupDto = await this.groupService.GetGroupById(id);
 
+            if (groupDto == null) return RedirectToAction("Index", "Home");
+
             var group = GroupViewModel.FromDTO(groupDto);
 
             return View("Details", group);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var users = this.userService.GetUsers();
+            var users = await this.userService.GetUsers();
+
             var model = new GroupCreateModel
             {
                 Users = users
-                .Where(x => x.Name != userService.GetCurrUser().Name)
-                .Select(x => new SelectListItem
-                {
-                    Text = x.Name,
-                    Value = x.Id.ToString()
-                })
-                .ToList()
+                    .Where(x => x.Name != userService.GetCurrUser().Name)
+                    .Select(x => new SelectListItem
+                        {
+                            Text = x.Name,
+                            Value = x.Id.ToString()
+                        })
+                    .ToList()
             };
 
             return View(model);

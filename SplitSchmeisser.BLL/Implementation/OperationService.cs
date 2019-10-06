@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using SplitSchmeisser.BLL.Interfaces;
@@ -12,18 +13,20 @@ namespace SplitSchmeisser.BLL.Implementation
     public class OperationService : IOperationService
     {
         private IGenericRepository<Operation> operationRepository;
+        private readonly IGroupService groupService;
 
         public OperationService(
-           IGenericRepository<Operation> operationRepository)
+           IGenericRepository<Operation> operationRepository,
+           IGroupService groupService)
         {
             this.operationRepository = operationRepository;
+            this.groupService = groupService;
         }
 
-        public IList<OperationDTO> GetOperations()
+        public async Task<IList<OperationDTO>> GetOperationsAsync()
         {
-            return this.operationRepository.GetAll().ToList()
-               .Select(x => OperationDTO.FromEntity(x))
-               .ToList();
+            var operations = await this.operationRepository.GetAll().ToListAsync();
+            return operations.Select(x => OperationDTO.FromEntity(x)).ToList();
         }
 
         public async Task CreateOperation(int ownerId, int groupId, double amount, string Description = "")
@@ -54,21 +57,23 @@ namespace SplitSchmeisser.BLL.Implementation
             return OperationDTO.FromEntity(operation);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(OperationDTO dto)
         {
-            await this.operationRepository.Delete(id);
+            await this.operationRepository.Delete(dto.Id);
+
+            var group = await this.groupService.GetGroupById(dto.GroupId);
+
+            if (group.Operations.Count == 0) {
+                await this.groupService.Delete(dto.GroupId);
+            }
         }
 
-        public IList<OperationDTO> GetAllOperationsByGroup(int groupId)
+        public async Task<IList<OperationDTO>> GetAllOperationsByGroup(int groupId)
         {
-            var ops = operationRepository.GetAll()
-               .ToList()
+            return await this.operationRepository.GetAll()
                .Where(x => x.GroupId == groupId)
-               .ToList()
                .Select(x => OperationDTO.FromEntity(x))
-               .ToList();
-               
-            return ops;
+               .ToListAsync();
         }
     }
 }

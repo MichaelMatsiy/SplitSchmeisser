@@ -25,7 +25,7 @@ namespace SplitSchmeisser.Web.Controllers
             this.userService = userService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             if (CurrentUserService.UserName == null)
             {
@@ -34,11 +34,11 @@ namespace SplitSchmeisser.Web.Controllers
 
             var currentUserId = this.userService.GetCurrUser().Id;
 
-            var gr = this.groupService.GetGroups()
-                .Select(x => GroupListModel.FromDTO(x)).Where(x => x.UserIDs.Contains(currentUserId))
+            var gr = await this.groupService.GetGroups();
+                var groups = gr.Select(x => GroupListModel.FromDTO(x)).Where(x => x.UserIDs.Contains(currentUserId))
                 .ToList();
 
-            return View(gr);
+            return View(groups);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

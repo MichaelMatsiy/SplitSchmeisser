@@ -25,15 +25,16 @@ namespace SplitSchmeisser.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(string userName, string password)
+        public async Task<IActionResult> LoginAsync(string userName, string password)
         {
             if (!string.IsNullOrEmpty(userName) && string.IsNullOrEmpty(password))
             {
                 return RedirectToAction("Login");
             }
 
+            var userCheck = await this.userService.ValidateUserAsync(userName, password);
 
-            if (this.userService.ValidateUser(userName, password))
+            if (userCheck)
             {
                 //Create the identity for the user  
                 var identity = new ClaimsIdentity(new[] {
@@ -66,7 +67,7 @@ namespace SplitSchmeisser.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Registration(UserCreateModel user)
         {
-            if (this.userService.CheckUserName(user.Name))
+            if (await this.userService.CheckUserNameAsync(user.Name))
             {
                 await this.userService.CreateUserAsync(user.Name, user.Password);
             }

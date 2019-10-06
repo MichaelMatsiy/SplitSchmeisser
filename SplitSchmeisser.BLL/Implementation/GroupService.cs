@@ -4,6 +4,7 @@ using SplitSchmeisser.DAL.Entities;
 using SplitSchmeisser.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,7 +29,7 @@ namespace SplitSchmeisser.BLL.Implementation
 
         public async Task AddUserToGroup(int groupId, int userId)
         {
-            var group = groupRepository.GetById(groupId).Result;
+            var group = await groupRepository.GetById(groupId);
             var user = await this.userRepository.GetById(userId);
 
             group.Users.Add(user);
@@ -38,9 +39,9 @@ namespace SplitSchmeisser.BLL.Implementation
 
         public async Task CreateGroup(string name, IList<int> userIds, double amount)
         {
-            var users = this.userRepository.GetAll()
+            var users = await this.userRepository.GetAll()
                 .Where(x => userIds.Contains(x.Id))
-                .ToList();
+                .ToListAsync();
 
             var currUser = this.userService.GetCurrUser();
 
@@ -75,17 +76,18 @@ namespace SplitSchmeisser.BLL.Implementation
             await this.groupRepository.UpdateAsync(group);
         }
 
-        public IList<GroupDTO> GetGroups()
+        public async Task<IList<GroupDTO>> GetGroups()
         {
-            return this.groupRepository.GetAll()
-                .ToList()
-                .Select(x => GroupDTO.FromEntity(x))
-                .ToList();
+            var groups = await this.groupRepository.GetAll().ToListAsync();
+
+            return groups.Select(x => GroupDTO.FromEntity(x)).ToList();
         }
 
         public async Task<GroupDTO> GetGroupById(int id)
         {
             var group = await this.groupRepository.GetById(id);
+
+            if (group == null) return null;
 
             var groupDto = GroupDTO.FromEntity(group);
             groupDto.UserDebts = this.userService.GetUserDebtsByGroupPerUrers(groupDto);
@@ -97,6 +99,5 @@ namespace SplitSchmeisser.BLL.Implementation
         {
             await this.groupRepository.Delete(id);
         }
-
     }
 }

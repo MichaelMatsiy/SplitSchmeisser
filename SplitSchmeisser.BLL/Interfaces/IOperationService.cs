@@ -8,15 +8,14 @@ namespace SplitSchmeisser.BLL.Interfaces
     {
         Task CreateOperation(int ownerId, int groupId, double amount, string Description = "");
 
-        IList<OperationDTO> GetOperations();
+        Task<IList<OperationDTO>> GetOperationsAsync();
 
-        Task DeleteAsync(int id);
+        Task DeleteAsync(OperationDTO dto);
 
         Task UpdateOperation(OperationDTO dto);
 
-        IList<OperationDTO> GetAllOperationsByGroup(int groupId);
+        Task<IList<OperationDTO>> GetAllOperationsByGroup(int groupId);
 
         Task<OperationDTO> GetOperationById(int id);
-
     }
 }

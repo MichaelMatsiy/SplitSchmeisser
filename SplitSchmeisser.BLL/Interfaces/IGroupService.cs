@@ -10,7 +10,7 @@ namespace SplitSchmeisser.BLL.Interfaces
 
         Task AddUserToGroup(int groupId, int userId);
 
-        IList<GroupDTO> GetGroups();
+        Task<IList<GroupDTO>> GetGroups();
 
         Task UpdateGroup(GroupDTO dto);
 

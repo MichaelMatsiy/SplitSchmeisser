@@ -30,14 +30,6 @@ namespace SplitSchmeisser.BLL.CommonLogic
             this.debts = debts;
         }
 
-        //public IEnumerator<Debt> GetEnumerator()
-        //{
-        //    foreach (var d in debts)
-        //    {
-        //        yield return d;
-        //    }
-        //}
-
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();

@@ -7,18 +7,16 @@ namespace SplitSchmeisser.BLL.Interfaces
 {
     public interface IUserService
     {
-        ValueTask<double> GetUserDebtsByGroup(int userId, int groupId);
-
         List<Debt> GetUserDebtsByGroupPerUrers(GroupDTO groupId);
 
-        IList<UserDTO> GetUsers();
+        Task<IList<UserDTO>> GetUsers();
 
         User GetCurrUser();
 
         Task CreateUserAsync(string name, string password);
 
-        bool ValidateUser(string userNmae, string password);
+        ValueTask<bool> ValidateUserAsync(string userNmae, string password);
 
-        bool CheckUserName(string userNmae);
+        ValueTask<bool> CheckUserNameAsync(string userNmae);
     }
 }

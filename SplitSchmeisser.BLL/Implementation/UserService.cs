@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using System.Data.Entity;
 
 namespace SplitSchmeisser.BLL.Implementation
 {
@@ -22,32 +23,15 @@ namespace SplitSchmeisser.BLL.Implementation
             this.userRepository = userRepository;
         }
 
-        public IList<UserDTO> GetUsers()
+        public async Task<IList<UserDTO>> GetUsers()
         {
-            return this.userRepository.GetAll().ToList()
-                .Select(x => UserDTO.FromEntity(x))
-                .ToList();
+            var users = await this.userRepository.GetAll().ToListAsync();
+
+            return users.Select(x => UserDTO.FromEntity(x)).ToList();
         }
 
-        public async ValueTask<double> GetUserDebtsByGroup(int userId, int groupId)
+        private List<Debt> ResolveDebts(UserDebts userDebts)
         {
-            var group = await groupRepository.GetById(groupId);
-
-            var memberCount = group.Users.Count();
-            var operations = group.Operations
-                .ToList();
-
-            var userPayments = operations.Where(x => x.Owner.Id == userId)
-                .Sum(x => x.Amount);
-
-            var otherPayments = operations.Where(x => x.Owner.Id != userId)
-                .Sum(x => x.Amount);
-
-            return (otherPayments / memberCount) - (userPayments / memberCount);
-        }
-
-
-        private List<Debt> ResolveDebts(UserDebts userDebts) {
 
             List<Debt> resolvedList = new List<Debt>();
 
@@ -82,27 +66,27 @@ namespace SplitSchmeisser.BLL.Implementation
 
         public List<Debt> GetUserDebtsByGroupPerUrers(GroupDTO group)
         {
-           var userDebts = new UserDebts();
-               
-               var users = group.Users.ToList();
+            var userDebts = new UserDebts();
 
-               foreach (var u in users)
-               {
-                   var userPayments = group.Operations.Where(x => x.Owner.Id == u.Id)
-                       .Sum(x => x.Amount);
+            var users = group.Users.ToList();
 
-                   if ((userPayments / users.Count) > 0)
-                   {
-                       var debtors = users.Where(x => x.Id != u.Id);
+            foreach (var u in users)
+            {
+                var userPayments = group.Operations.Where(x => x.Owner.Id == u.Id)
+                    .Sum(x => x.Amount);
 
-                       foreach (var d in debtors)
-                       {
-                           userDebts.Add(u.Name, Math.Round((userPayments / users.Count), 2), d.Name);
-                       }
-                   }
-               }
+                if ((userPayments / users.Count) > 0)
+                {
+                    var debtors = users.Where(x => x.Id != u.Id);
 
-               return ResolveDebts(userDebts);
+                    foreach (var d in debtors)
+                    {
+                        userDebts.Add(u.Name, Math.Round((userPayments / users.Count), 2), d.Name);
+                    }
+                }
+            }
+
+            return ResolveDebts(userDebts);
         }
 
         public User GetCurrUser()
@@ -119,18 +103,19 @@ namespace SplitSchmeisser.BLL.Implementation
             });
         }
 
-        public bool ValidateUser(string userName, string password)
+        public async ValueTask<bool> ValidateUserAsync(string userName, string password)
         {
-            return this.userRepository.GetAll().ToList()
-                .FirstOrDefault(x => x.Name == userName && x.Password == password)
-                != null;
+            var user = await this.userRepository.GetAll()
+                .FirstOrDefaultAsync(x => x.Name == userName && x.Password == password);
+            return user != null;
         }
 
-        public bool CheckUserName(string userName)
+        public async ValueTask<bool> CheckUserNameAsync(string userName)
         {
-            return this.userRepository.GetAll()
-                .FirstOrDefault(x => x.Name == userName)
-                == null;
+            var user = await this.userRepository.GetAll()
+                .FirstOrDefaultAsync(x => x.Name == userName);
+
+            return user != null;
         }
     }
 }
