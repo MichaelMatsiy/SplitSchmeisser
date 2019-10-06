@@ -53,11 +53,12 @@ namespace SplitSchmeisser.BLL.Implementation
 
             foreach (var item in userDebts)
             {
+                if (resolvedList.Any(x => x.Borrower == item.Debtor && x.Debtor == item.Borrower)) continue;
+
                 var debts = userDebts.GetDebts().Where(x => x.Borrower == item.Debtor && x.Debtor == item.Borrower).ToList();
 
-                if (debts.Count > 0 && debts.Count < 2)
+                if (debts.Count > 0)
                 {
-
                     if (debts.First().Amount > item.Amount)
                     {
                         debts.First().Amount -= item.Amount;
@@ -69,30 +70,6 @@ namespace SplitSchmeisser.BLL.Implementation
                         resolvedList.Add(item);
 
                     }
-                    else if (debts.First().Amount == item.Amount)
-                    {
-                        continue;
-                    }
-                }
-                else if (debts.Count > 1) {
-
-                    foreach (var d in debts) {
-                        if (d.Amount > item.Amount)
-                        {
-                            d.Amount -= item.Amount;
-                            resolvedList.Add(d);
-                        }
-                        else if (d.Amount < item.Amount)
-                        {
-                            item.Amount -= d.Amount;
-                            resolvedList.Add(item);
-
-                        }
-                        else if (d.Amount == item.Amount)
-                        {
-                            continue;
-                        }
-                    }
                 }
                 else
                 {
@@ -103,11 +80,9 @@ namespace SplitSchmeisser.BLL.Implementation
             return resolvedList;
         }
 
-        public async Task<List<Debt>> GetUserDebtsByGroupPerUrers(GroupDTO group)
+        public List<Debt> GetUserDebtsByGroupPerUrers(GroupDTO group)
         {
-           return await Task.Run(() =>
-           {
-               var userDebts = new UserDebts();
+           var userDebts = new UserDebts();
                
                var users = group.Users.ToList();
 
@@ -128,7 +103,6 @@ namespace SplitSchmeisser.BLL.Implementation
                }
 
                return ResolveDebts(userDebts);
-           });
         }
 
         public User GetCurrUser()
@@ -147,7 +121,7 @@ namespace SplitSchmeisser.BLL.Implementation
 
         public bool ValidateUser(string userName, string password)
         {
-            return this.userRepository.GetAll()
+            return this.userRepository.GetAll().ToList()
                 .FirstOrDefault(x => x.Name == userName && x.Password == password)
                 != null;
         }

@@ -87,7 +87,10 @@ namespace SplitSchmeisser.BLL.Implementation
         {
             var group = await this.groupRepository.GetById(id);
 
-            return GroupDTO.FromEntity(group);
+            var groupDto = GroupDTO.FromEntity(group);
+            groupDto.UserDebts = this.userService.GetUserDebtsByGroupPerUrers(groupDto);
+
+            return groupDto;
         }
 
         public async Task Delete(int id)

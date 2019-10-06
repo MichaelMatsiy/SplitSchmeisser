@@ -26,7 +26,6 @@ namespace SplitSchmeisser.Web.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var groupDto = await this.groupService.GetGroupById(id);
-            groupDto.UserDebts = await this.userService.GetUserDebtsByGroupPerUrers(groupDto);
 
             var group = GroupViewModel.FromDTO(groupDto);
 

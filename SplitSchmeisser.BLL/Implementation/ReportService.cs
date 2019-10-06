@@ -16,28 +16,29 @@ namespace SplitSchmeisser.BLL.Implementation
         private IGenericRepository<Group> groupRepository;
 
         private IUserService userService;
-
+        private IGroupService groupService;
 
         public ReportService(IGenericRepository<Operation> operationRepository,
             IGenericRepository<Group> groupRepository,
-            IUserService userService)
+            IUserService userService,
+            IGroupService groupService)
         {
             this.operationRepository = operationRepository;
             this.groupRepository = groupRepository;
             this.userService = userService;
+            this.groupService = groupService;
         }
 
         public async Task<byte[]> GenerateDebtsReport(int id)
         {
-            var group = await this.groupRepository.GetById(id);
-            var userDebts = await this.userService.GetUserDebtsByGroupPerUrers(GroupDTO.FromEntity(group));
+            var group = await this.groupService.GetGroupById(id);
 
             XmlSerializer xs = new XmlSerializer(typeof(List<Debt>));
 
             byte[] bytes = null;
             using (var ms = new MemoryStream())
             {
-                xs.Serialize(ms, userDebts);
+                xs.Serialize(ms, group.UserDebts);
                 bytes = ms.ToArray();
             }
 
@@ -46,9 +47,7 @@ namespace SplitSchmeisser.BLL.Implementation
 
         public async Task<byte[]> GenerateGroupReport(ReportRequest request)
         {
-            var group = await this.groupRepository.GetById(request.Id);
-            var groupDto = GroupDTO.FromEntity(group);
-            groupDto.UserDebts = await this.userService.GetUserDebtsByGroupPerUrers(groupDto);
+            var groupDto = await this.groupService.GetGroupById(request.Id);
             groupDto.Operations = groupDto.Operations.Where(x => x.DateOfLoan >= request.StartDate && x.DateOfLoan <= request.EndDate).ToList();
 
             XmlSerializer xs = new XmlSerializer(typeof(GroupDTO));

@@ -21,6 +21,7 @@ namespace SplitSchmeisser.BLL.Models
         public List<UserDTO> Users { get; set; }
 
         public List<OperationDTO> Operations { get; set; }
+
         [XmlIgnore]
         public List<Debt> UserDebts { get; set; }
 
