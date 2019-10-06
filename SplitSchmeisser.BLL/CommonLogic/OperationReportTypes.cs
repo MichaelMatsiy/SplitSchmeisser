@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SplitSchmeisser.BLL.CommonLogic
+﻿namespace SplitSchmeisser.BLL.CommonLogic
 {
     public enum OperationReportTypes
     {

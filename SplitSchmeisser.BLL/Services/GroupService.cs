@@ -12,10 +12,10 @@ namespace SplitSchmeisser.BLL.Services
 {
     public class GroupService : IGroupService
     {
-        private IGenericRepository<Group> groupRepository;
-        private IGenericRepository<User> userRepository;
+        private readonly IGenericRepository<Group> groupRepository;
+        private readonly IGenericRepository<User> userRepository;
 
-        private IUserService userService;
+        private readonly IUserService userService;
 
         public GroupService(
             IGenericRepository<Group> groupRepository,

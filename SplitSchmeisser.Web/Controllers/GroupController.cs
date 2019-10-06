@@ -13,8 +13,8 @@ namespace SplitSchmeisser.Web.Controllers
     [Authorize]
     public class GroupController : Controller
     {
-        IGroupService groupService;
-        IUserService userService;
+        private readonly IGroupService groupService;
+        private readonly IUserService userService;
 
         public GroupController(IGroupService groupService,
             IUserService userService)
@@ -57,11 +57,7 @@ namespace SplitSchmeisser.Web.Controllers
         {
             await this.groupService.CreateGroupAsync(group.Name, group.UserIds, group.Amount, group.Description);
 
-            return RedirectToRoute("Default", new
-            {
-                controller = "",
-                action = ""
-            });
+            return RedirectToAction("Index", "Home");
         }
 
         public async Task<IActionResult> Edit(int id)

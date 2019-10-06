@@ -1,22 +1,17 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
-using System.Xml.Serialization;
 using SplitSchmeisser.BLL.Interfaces;
 using SplitSchmeisser.BLL.Models;
 using SplitSchmeisser.Web.Models;
-using System.IO;
-using System.Collections.Generic;
 using SplitSchmeisser.BLL.CommonLogic;
 
 namespace SplitSchmeisser.Web.Controllers
 {
     public class OperationController : Controller
     {
-        IGroupService groupService;
-        IUserService userService;
-        IOperationService operationService;
+        private readonly IGroupService groupService;
+        private readonly IUserService userService;
+        private readonly IOperationService operationService;
 
         public OperationController(IGroupService groupService,
             IUserService userService,

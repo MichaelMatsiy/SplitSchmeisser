@@ -1,10 +1,8 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SplitSchmeisser.BLL;
 using SplitSchmeisser.BLL.Interfaces;
 using SplitSchmeisser.BLL.Models;
 using SplitSchmeisser.Web.Models;
@@ -14,10 +12,9 @@ namespace SplitSchmeisser.Web.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        IGroupService groupService;
-        IUserService userService;
+        private readonly IGroupService groupService;
+        private readonly IUserService userService;
          
-
         public HomeController(IGroupService groupService, 
             IUserService userService)
         {

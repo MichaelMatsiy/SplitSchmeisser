@@ -13,11 +13,11 @@ namespace SplitSchmeisser.BLL.Services
 {
     public class ReportService : IReportService
     {
-        private IGenericRepository<Operation> operationRepository;
-        private IGenericRepository<Group> groupRepository;
+        private readonly IGenericRepository<Operation> operationRepository;
+        private readonly IGenericRepository<Group> groupRepository;
 
-        private IUserService userService;
-        private IGroupService groupService;
+        private readonly IUserService userService;
+        private readonly IGroupService groupService;
 
         public ReportService(IGenericRepository<Operation> operationRepository,
             IGenericRepository<Group> groupRepository,

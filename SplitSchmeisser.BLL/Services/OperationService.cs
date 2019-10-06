@@ -12,7 +12,7 @@ namespace SplitSchmeisser.BLL.Services
 {
     public class OperationService : IOperationService
     {
-        private IGenericRepository<Operation> operationRepository;
+        private readonly IGenericRepository<Operation> operationRepository;
         private readonly IGroupService groupService;
 
         public OperationService(

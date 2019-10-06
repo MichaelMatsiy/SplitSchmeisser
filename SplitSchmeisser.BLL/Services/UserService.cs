@@ -13,13 +13,10 @@ namespace SplitSchmeisser.BLL.Services
 {
     public class UserService : IUserService
     {
-        private IGenericRepository<Group> groupRepository;
-        private IGenericRepository<User> userRepository;
+        private readonly IGenericRepository<User> userRepository;
 
-        public UserService(IGenericRepository<Group> groupRepository,
-            IGenericRepository<User> userRepository)
+        public UserService(IGenericRepository<User> userRepository)
         {
-            this.groupRepository = groupRepository;
             this.userRepository = userRepository;
         }
 
