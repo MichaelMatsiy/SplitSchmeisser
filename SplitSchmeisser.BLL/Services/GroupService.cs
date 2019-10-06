@@ -8,7 +8,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SplitSchmeisser.BLL.Implementation
+namespace SplitSchmeisser.BLL.Services
 {
     public class GroupService : IGroupService
     {
@@ -27,17 +27,17 @@ namespace SplitSchmeisser.BLL.Implementation
             this.userService = userService;
         }
 
-        public async Task AddUserToGroup(int groupId, int userId)
+        public async Task AddUserToGroupAsync(int groupId, int userId)
         {
-            var group = await groupRepository.GetById(groupId);
-            var user = await this.userRepository.GetById(userId);
+            var group = await groupRepository.GetByIdAsync(groupId);
+            var user = await this.userRepository.GetByIdAsync(userId);
 
             group.Users.Add(user);
 
             await groupRepository.UpdateAsync(group);
         }
 
-        public async Task CreateGroup(string name, IList<int> userIds, double amount)
+        public async Task CreateGroupAsync(string name, IList<int> userIds, double amount, string description)
         {
             var users = await this.userRepository.GetAll()
                 .Where(x => userIds.Contains(x.Id))
@@ -60,44 +60,44 @@ namespace SplitSchmeisser.BLL.Implementation
                 OwnerId = currUser.Id,
                 Group = group,
                 Owner = currUser,
-                Description = "description"
+                Description = description
             };
 
             group.Operations.Add(operation);
 
-            await this.groupRepository.Insert(group);
+            await this.groupRepository.InsertAsync(group);
         }
 
-        public async Task UpdateGroup(GroupDTO dto)
+        public async Task UpdateGroupAsync(GroupDTO dto)
         {
-            var group = await this.groupRepository.GetById(dto.Id);
+            var group = await this.groupRepository.GetByIdAsync(dto.Id);
             group.Name = dto.Name;
 
             await this.groupRepository.UpdateAsync(group);
         }
 
-        public async Task<IList<GroupDTO>> GetGroups()
+        public async Task<IList<GroupDTO>> GetGroupsAsync()
         {
             var groups = await this.groupRepository.GetAll().ToListAsync();
 
             return groups.Select(x => GroupDTO.FromEntity(x)).ToList();
         }
 
-        public async Task<GroupDTO> GetGroupById(int id)
+        public async Task<GroupDTO> GetGroupByIdAsync(int id)
         {
-            var group = await this.groupRepository.GetById(id);
+            var group = await this.groupRepository.GetByIdAsync(id);
 
             if (group == null) return null;
 
             var groupDto = GroupDTO.FromEntity(group);
-            groupDto.UserDebts = this.userService.GetUserDebtsByGroupPerUrers(groupDto);
+            groupDto.UserDebts = this.userService.GetUserDebtsByGroupPerUrersAsync(groupDto);
 
             return groupDto;
         }
 
-        public async Task Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            await this.groupRepository.Delete(id);
+            await this.groupRepository.DeleteAsync(id);
         }
     }
 }

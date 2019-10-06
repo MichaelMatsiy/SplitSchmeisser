@@ -7,9 +7,9 @@ namespace SplitSchmeisser.BLL.Interfaces
 {
     public interface IUserService
     {
-        List<Debt> GetUserDebtsByGroupPerUrers(GroupDTO groupId);
+        List<Debt> GetUserDebtsByGroupPerUrersAsync(GroupDTO groupId);
 
-        Task<IList<UserDTO>> GetUsers();
+        Task<IList<UserDTO>> GetUsersAsync();
 
         User GetCurrUser();
 

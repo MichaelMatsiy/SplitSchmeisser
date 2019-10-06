@@ -5,11 +5,11 @@ namespace SplitSchmeisser.BLL.Interfaces
 {
     public interface IReportService
     {
-        Task<byte[]> GenerateGroupReport(ReportRequest request);
-        Task<byte[]> GenerateGroupsReport(ReportRequest request);
-        Task<byte[]> GenerateOperationReport(int id);
-        Task<byte[]> GenerateOperationsReport(ReportRequest request);
-        Task<byte[]> GenerateDebtsReport(int id);
+        Task<byte[]> GenerateGroupReportAsync(ReportRequest request);
+        Task<byte[]> GenerateGroupsReportAsync(ReportRequest request);
+        Task<byte[]> GenerateOperationReportAsync(int id);
+        Task<byte[]> GenerateOperationsReportAsync(ReportRequest request);
+        Task<byte[]> GenerateDebtsReportAsync(int id);
 
     }
 }

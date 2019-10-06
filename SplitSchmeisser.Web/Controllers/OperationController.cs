@@ -39,7 +39,7 @@ namespace SplitSchmeisser.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(OperationCreateModel op)
         {
-            await this.operationService.CreateOperation(
+            await this.operationService.CreateOperationAsync(
                 op.OwnerID,
                 op.GroupID,
                 op.Amount,
@@ -51,7 +51,7 @@ namespace SplitSchmeisser.Web.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            var operationDto = await operationService.GetOperationById(id);
+            var operationDto = await operationService.GetOperationByIdAsync(id);
 
             return View("Edit", OperationEditModel.FromDTO(operationDto));
         }
@@ -66,7 +66,7 @@ namespace SplitSchmeisser.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                await operationService.UpdateOperation(new OperationDTO {
+                await operationService.UpdateOperationAsync(new OperationDTO {
                     Id = operation.Id,
                     Description = operation.Description,
                     Amount = operation.Amount
@@ -80,7 +80,7 @@ namespace SplitSchmeisser.Web.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            var operationDto = await this.operationService.GetOperationById(id);
+            var operationDto = await this.operationService.GetOperationByIdAsync(id);
 
             await this.operationService.DeleteAsync(operationDto);
 

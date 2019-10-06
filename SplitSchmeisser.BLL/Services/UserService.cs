@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System;
 using System.Data.Entity;
 
-namespace SplitSchmeisser.BLL.Implementation
+namespace SplitSchmeisser.BLL.Services
 {
     public class UserService : IUserService
     {
@@ -23,7 +23,7 @@ namespace SplitSchmeisser.BLL.Implementation
             this.userRepository = userRepository;
         }
 
-        public async Task<IList<UserDTO>> GetUsers()
+        public async Task<IList<UserDTO>> GetUsersAsync()
         {
             var users = await this.userRepository.GetAll().ToListAsync();
 
@@ -64,7 +64,7 @@ namespace SplitSchmeisser.BLL.Implementation
             return resolvedList;
         }
 
-        public List<Debt> GetUserDebtsByGroupPerUrers(GroupDTO group)
+        public List<Debt> GetUserDebtsByGroupPerUrersAsync(GroupDTO group)
         {
             var userDebts = new UserDebts();
 
@@ -91,12 +91,12 @@ namespace SplitSchmeisser.BLL.Implementation
 
         public User GetCurrUser()
         {
-            return this.userRepository.GetAll().First(x => x.Name == CurrentUserService.UserName);
+            return this.userRepository.GetAll().First(x => x.Name == CurrentUser.UserName);
         }
 
         public async Task CreateUserAsync(string name, string password)
         {
-            await this.userRepository.Insert(new User()
+            await this.userRepository.InsertAsync(new User()
             {
                 Name = name,
                 Password = password
@@ -115,7 +115,7 @@ namespace SplitSchmeisser.BLL.Implementation
             var user = await this.userRepository.GetAll()
                 .FirstOrDefaultAsync(x => x.Name == userName);
 
-            return user != null;
+            return user == null;
         }
     }
 }

@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace SplitSchmeisser.BLL.Implementation
+namespace SplitSchmeisser.BLL.Services
 {
     public class ReportService : IReportService
     {
@@ -30,25 +30,25 @@ namespace SplitSchmeisser.BLL.Implementation
             this.groupService = groupService;
         }
 
-        public async Task<byte[]> GenerateDebtsReport(int id)
+        public async Task<byte[]> GenerateDebtsReportAsync(int id)
         {
-            var group = await this.groupService.GetGroupById(id);
+            var group = await this.groupService.GetGroupByIdAsync(id);
             return Serialize<List<Debt>>(group.UserDebts);
         }
 
-        public async Task<byte[]> GenerateGroupReport(ReportRequest request)
+        public async Task<byte[]> GenerateGroupReportAsync(ReportRequest request)
         {
-            var groupDto = await this.groupService.GetGroupById(request.Id);
+            var groupDto = await this.groupService.GetGroupByIdAsync(request.Id);
             groupDto.Operations = groupDto.Operations.Where(x => x.DateOfLoan >= request.StartDate && x.DateOfLoan <= request.EndDate).ToList();
 
             return Serialize<GroupDTO>(groupDto);
         }
 
-        public async Task<byte[]> GenerateGroupsReport(ReportRequest request)
+        public async Task<byte[]> GenerateGroupsReportAsync(ReportRequest request)
         {
             var currUser = this.userService.GetCurrUser();
 
-            var gr = await this.groupService.GetGroups();
+            var gr = await this.groupService.GetGroupsAsync();
             var groups = gr.Where(x => x.Users.Any(u => u.Id == currUser.Id)).ToList();
 
             groups.ForEach(x => x.Operations = x.Operations.Where(o => o.DateOfLoan >= request.StartDate
@@ -57,17 +57,17 @@ namespace SplitSchmeisser.BLL.Implementation
             return Serialize<List<GroupDTO>>(groups);
         }
 
-        public async Task<byte[]> GenerateOperationReport(int operationId)
+        public async Task<byte[]> GenerateOperationReportAsync(int operationId)
         {
-            var operation = await this.operationRepository.GetById(operationId);
+            var operation = await this.operationRepository.GetByIdAsync(operationId);
             var operationDto = OperationDTO.FromEntity(operation);
 
             return Serialize<OperationDTO>(operationDto);
         }
 
-        public async Task<byte[]> GenerateOperationsReport(ReportRequest request)
+        public async Task<byte[]> GenerateOperationsReportAsync(ReportRequest request)
         {
-            var group = await this.groupRepository.GetById(request.Id);
+            var group = await this.groupRepository.GetByIdAsync(request.Id);
             var operations = group.Operations.Where(x => x.DateOfLoan >= request.StartDate && x.DateOfLoan <= request.EndDate)
                 .Select(x => OperationDTO.FromEntity(x))
                 .ToList();

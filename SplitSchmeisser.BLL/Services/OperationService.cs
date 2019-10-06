@@ -8,7 +8,7 @@ using SplitSchmeisser.BLL.Models;
 using SplitSchmeisser.DAL.Entities;
 using SplitSchmeisser.DAL.Interfaces;
 
-namespace SplitSchmeisser.BLL.Implementation
+namespace SplitSchmeisser.BLL.Services
 {
     public class OperationService : IOperationService
     {
@@ -29,9 +29,9 @@ namespace SplitSchmeisser.BLL.Implementation
             return operations.Select(x => OperationDTO.FromEntity(x)).ToList();
         }
 
-        public async Task CreateOperation(int ownerId, int groupId, double amount, string Description = "")
+        public async Task CreateOperationAsync(int ownerId, int groupId, double amount, string Description = "")
         {
-            await this.operationRepository.Insert(new Operation
+            await this.operationRepository.InsertAsync(new Operation
             {
                 Amount = amount,
                 OwnerId = ownerId,
@@ -41,34 +41,34 @@ namespace SplitSchmeisser.BLL.Implementation
             });
         }
 
-        public async Task UpdateOperation(OperationDTO dto)
+        public async Task UpdateOperationAsync(OperationDTO dto)
         {
-            var operation = await this.operationRepository.GetById(dto.Id);
+            var operation = await this.operationRepository.GetByIdAsync(dto.Id);
             operation.Description = dto.Description;
             operation.Amount = dto.Amount;
 
             await this.operationRepository.UpdateAsync(operation);
         }
 
-        public async Task<OperationDTO> GetOperationById(int id)
+        public async Task<OperationDTO> GetOperationByIdAsync(int id)
         {
-            var operation = await this.operationRepository.GetById(id);
+            var operation = await this.operationRepository.GetByIdAsync(id);
 
             return OperationDTO.FromEntity(operation);
         }
 
         public async Task DeleteAsync(OperationDTO dto)
         {
-            await this.operationRepository.Delete(dto.Id);
+            await this.operationRepository.DeleteAsync(dto.Id);
 
-            var group = await this.groupService.GetGroupById(dto.GroupId);
+            var group = await this.groupService.GetGroupByIdAsync(dto.GroupId);
 
             if (group.Operations.Count == 0) {
-                await this.groupService.Delete(dto.GroupId);
+                await this.groupService.DeleteAsync(dto.GroupId);
             }
         }
 
-        public async Task<IList<OperationDTO>> GetAllOperationsByGroup(int groupId)
+        public async Task<IList<OperationDTO>> GetAllOperationsByGroupAsync(int groupId)
         {
             return await this.operationRepository.GetAll()
                .Where(x => x.GroupId == groupId)

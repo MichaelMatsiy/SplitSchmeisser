@@ -21,13 +21,13 @@ namespace SplitSchmeisser.DAL.Repositories
             return context.Set<TEntity>();
         }
 
-        public async Task<TEntity> GetById(int id)
+        public async Task<TEntity> GetByIdAsync(int id)
         {
             Logger.Write($"Record with id: {id} was requested", delay);
             return await context.Set<TEntity>().FindAsync(id);                
         }
 
-        public async Task Insert(TEntity entity)
+        public async Task InsertAsync(TEntity entity)
         {
             context.Set<TEntity>().Add(entity);
             await context.SaveChangesAsync();
@@ -51,9 +51,9 @@ namespace SplitSchmeisser.DAL.Repositories
             return existing;
         }
 
-        public async Task Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            var entity = await GetById(id);
+            var entity = await GetByIdAsync(id);
             context.Set<TEntity>().Remove(entity);
             await context.SaveChangesAsync();
 

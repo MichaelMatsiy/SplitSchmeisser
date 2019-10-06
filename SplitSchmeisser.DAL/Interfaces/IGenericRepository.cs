@@ -9,12 +9,12 @@ namespace SplitSchmeisser.DAL.Interfaces
     {
         IQueryable<TEntity> GetAll();
 
-        Task<TEntity> GetById(int id);
+        Task<TEntity> GetByIdAsync(int id);
 
-        Task Insert(TEntity entity);
+        Task InsertAsync(TEntity entity);
 
         Task<TEntity> UpdateAsync(TEntity entity);
 
-        Task Delete(int id);
+        Task DeleteAsync(int id);
     }
 }

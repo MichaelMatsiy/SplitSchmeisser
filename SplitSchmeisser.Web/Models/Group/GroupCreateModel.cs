@@ -9,6 +9,8 @@ namespace SplitSchmeisser.Web.Models
 
         public double Amount { get; set; }
 
+        public string Description { get; set; }
+
         public List<SelectListItem> Users { get; set; }
 
         public List<int> UserIds { get; set; }

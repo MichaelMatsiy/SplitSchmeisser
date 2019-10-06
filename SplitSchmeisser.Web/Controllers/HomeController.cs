@@ -27,14 +27,14 @@ namespace SplitSchmeisser.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            if (CurrentUserService.UserName == null)
+            if (CurrentUser.UserName == null)
             {
-                CurrentUserService.UserName = User.Identity.Name;
+                CurrentUser.UserName = User.Identity.Name;
             }
 
             var currentUserId = this.userService.GetCurrUser().Id;
 
-            var gr = await this.groupService.GetGroups();
+            var gr = await this.groupService.GetGroupsAsync();
                 var groups = gr.Select(x => GroupListModel.FromDTO(x)).Where(x => x.UserIDs.Contains(currentUserId))
                 .ToList();
 

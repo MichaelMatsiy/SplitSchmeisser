@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SplitSchmeisser.BLL.Implementation;
+using SplitSchmeisser.BLL.Services;
 using SplitSchmeisser.BLL.Interfaces;
 using SplitSchmeisser.DAL.Context;
 using SplitSchmeisser.DAL.Interfaces;

@@ -5,11 +5,6 @@
 
 <div class="esh-orders">
     <div class="container">
-        @*<div>
-            <a asp-controller="Group" asp-action="Details" asp-route-id="@Model.Id" class="content-heading text-muted text-decoration-none text-dark">
-                <img src="~/icons/back.png" alt="Back to Group" width="20" height="20" /><span class="mt-2">Back To Group</span>
-            </a>
-        </div>*@
 
         <div class="paragraphs">
             <div class="row">
@@ -29,14 +24,16 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="Id" />
                     <div class="form-group">
+                        <h3>From </h3>
                         @Html.TextBoxFor(model => model.StartDate, new { @type = "date", @class = "formcontrol datepicker" })
 
                     </div>
                     <div class="form-group">
-                        @Html.TextBoxFor(model => model.EndDate, new { @type = "date", @class = "formcontrol datepicker"} )
+                        <h3>To </h3>
+                        @Html.TextBoxFor(model => model.EndDate, new { @type = "date", @class = "formcontrol datepicker" })
                     </div>
                     <div class="form-group">
-                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <input type="submit" value="Generate" class="btn btn-primary" />
                     </div>
                 </form>
             </div>

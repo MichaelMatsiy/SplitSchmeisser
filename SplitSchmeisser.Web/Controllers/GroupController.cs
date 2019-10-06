@@ -25,7 +25,7 @@ namespace SplitSchmeisser.Web.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var groupDto = await this.groupService.GetGroupById(id);
+            var groupDto = await this.groupService.GetGroupByIdAsync(id);
 
             if (groupDto == null) return RedirectToAction("Index", "Home");
 
@@ -36,7 +36,7 @@ namespace SplitSchmeisser.Web.Controllers
 
         public async Task<IActionResult> Create()
         {
-            var users = await this.userService.GetUsers();
+            var users = await this.userService.GetUsersAsync();
 
             var model = new GroupCreateModel
             {
@@ -55,7 +55,7 @@ namespace SplitSchmeisser.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(GroupCreateModel group)
         {
-            await this.groupService.CreateGroup(group.Name, group.UserIds, group.Amount);
+            await this.groupService.CreateGroupAsync(group.Name, group.UserIds, group.Amount, group.Description);
 
             return RedirectToRoute("Default", new
             {
@@ -66,7 +66,7 @@ namespace SplitSchmeisser.Web.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            var group = await groupService.GetGroupById(id);
+            var group = await groupService.GetGroupByIdAsync(id);
 
             return View("Edit", GroupEditModel.FromDTO(group));
         }
@@ -81,23 +81,19 @@ namespace SplitSchmeisser.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                await groupService.UpdateGroup(new GroupDTO { Id = group.Id, Name = group.Name });
+                await groupService.UpdateGroupAsync(new GroupDTO { 
+                    Id = group.Id, 
+                    Name = group.Name 
+                });
 
-                return RedirectToAction("Details",
-                    new RouteValueDictionary(
-                        new
-                        {
-                            controller = "Group",
-                            action = "Details",
-                            Id = id
-                        }));
+                return RedirectToAction("Details", "Group", new { id });
             }
             return View(group);
         }
 
         public async Task<IActionResult> Delete(int id)
         {
-            await this.groupService.Delete(id);
+            await this.groupService.DeleteAsync(id);
             return RedirectToRoute("Default", new
             {
                 controller = "",

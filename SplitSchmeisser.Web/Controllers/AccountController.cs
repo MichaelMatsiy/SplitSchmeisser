@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using SplitSchmeisser.BLL;
 using SplitSchmeisser.BLL.Interfaces;
+using SplitSchmeisser.BLL.Models;
 using SplitSchmeisser.Web.Models;
 
 namespace SplitSchmeisser.Web.Controllers
@@ -25,7 +26,7 @@ namespace SplitSchmeisser.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LoginAsync(string userName, string password)
+        public async Task<IActionResult> Login(string userName, string password)
         {
             if (!string.IsNullOrEmpty(userName) && string.IsNullOrEmpty(password))
             {
@@ -45,7 +46,7 @@ namespace SplitSchmeisser.Web.Controllers
 
                 var login = HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-                CurrentUserService.UserName = userName;
+                CurrentUser.UserName = userName;
 
                 return RedirectToAction("Index", "Home");
             }
@@ -67,7 +68,8 @@ namespace SplitSchmeisser.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Registration(UserCreateModel user)
         {
-            if (await this.userService.CheckUserNameAsync(user.Name))
+            var checkNames = await this.userService.CheckUserNameAsync(user.Name);
+            if (checkNames)
             {
                 await this.userService.CreateUserAsync(user.Name, user.Password);
             }

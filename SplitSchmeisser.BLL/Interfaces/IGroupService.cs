@@ -6,17 +6,17 @@ namespace SplitSchmeisser.BLL.Interfaces
 {
     public interface IGroupService
     {
-        Task CreateGroup(string name, IList<int> userIds, double amount);
+        Task CreateGroupAsync(string name, IList<int> userIds, double amount, string description);
 
-        Task AddUserToGroup(int groupId, int userId);
+        Task AddUserToGroupAsync(int groupId, int userId);
 
-        Task<IList<GroupDTO>> GetGroups();
+        Task<IList<GroupDTO>> GetGroupsAsync();
 
-        Task UpdateGroup(GroupDTO dto);
+        Task UpdateGroupAsync(GroupDTO dto);
 
-        Task<GroupDTO> GetGroupById(int id);
+        Task<GroupDTO> GetGroupByIdAsync(int id);
 
-        Task Delete(int id);
+        Task DeleteAsync(int id);
 
     }
 }
